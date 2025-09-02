@@ -5,12 +5,15 @@ class AuthService {
   final ApiClient _client;
   AuthService(this._client);
 
-  Future<User> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(String email, String password) async {
     final res = await _client.post("/auth/login", data: {
       "email": email,
       "password": password,
     });
-    return User.fromJson(res.data["user"]);
+    return {
+      "user": User.fromJson(res.data["user"]),
+      "token": res.data["token"],
+    };
   }
 
   Future<void> logout({bool all = false}) =>
