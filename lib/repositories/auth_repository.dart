@@ -7,12 +7,10 @@ class AuthRepository {
   AuthRepository(this._service);
 
   Future<User> login(String email, String password) async {
-    final user = await _service.login(email, password);
-    // Guarda token si viene en la respuesta; ajusta según tu API
+    final res = await _service.login(email, password);
     final prefs = await SharedPreferences.getInstance();
-    // Ej: res.data["token"]
-    // await prefs.setString("token", token);
-    return user;
+    await prefs.setString("token", res["token"] as String);
+    return res["user"] as User;
   }
 
   Future<void> logout({bool all = false}) async {
@@ -25,6 +23,21 @@ class AuthRepository {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("token");
   }
+
+  Future<User> register(String email, String password, {String? name}) async {
+    final user = await _service.register(email, password, name: name);
+    // Guarda token si es necesario
+    return user;
+  }
+
+  Future<User> updateProfile({String? name, String? email}) async {
+    final user = await _service.updateProfile(name: name, email: email);
+    return user;
+  }
+
+  Future<void> updatePassword(
+          String currentPassword, String newPassword) =>
+      _service.updatePassword(currentPassword, newPassword);
 
   // Singleton de conveniencia si lo deseas:
   static AuthRepository get instance => throw UnimplementedError("Usa GetIt locator<AuthRepository>()");
