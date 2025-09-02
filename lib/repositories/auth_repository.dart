@@ -26,6 +26,21 @@ class AuthRepository {
     return prefs.getString("token");
   }
 
+  Future<User> register(String email, String password, {String? name}) async {
+    final user = await _service.register(email, password, name: name);
+    // Guarda token si es necesario
+    return user;
+  }
+
+  Future<User> updateProfile({String? name, String? email}) async {
+    final user = await _service.updateProfile(name: name, email: email);
+    return user;
+  }
+
+  Future<void> updatePassword(
+          String currentPassword, String newPassword) =>
+      _service.updatePassword(currentPassword, newPassword);
+
   // Singleton de conveniencia si lo deseas:
   static AuthRepository get instance => throw UnimplementedError("Usa GetIt locator<AuthRepository>()");
 }
