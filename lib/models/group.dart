@@ -1,1 +1,16 @@
+class Group {
+  final String id;
+  final String name;
 
+  Group({required this.id, required this.name});
+
+  factory Group.fromJson(Map<String, dynamic> json) => Group(
+        id: json['id'].toString(),
+        name: json['name'] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
+}
