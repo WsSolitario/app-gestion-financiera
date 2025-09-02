@@ -3,6 +3,8 @@ import "package:dio/dio.dart";
 import "../services/api_client.dart";
 import "../services/auth_service.dart";
 import "../repositories/auth_repository.dart";
+import "../repositories/group_repository.dart";
+import "../repositories/expense_repository.dart";
 
 final GetIt locator = GetIt.instance;
 
@@ -12,6 +14,11 @@ Future<void> setupLocator() async {
 
   locator.registerLazySingleton<ApiClient>(() => ApiClient(locator<Dio>()));
 
-  locator.registerLazySingleton<AuthService>(() => AuthService(locator<ApiClient>()));
-  locator.registerLazySingleton<AuthRepository>(() => AuthRepository(locator<AuthService>()));
+  locator.registerLazySingleton<AuthService>(
+      () => AuthService(locator<ApiClient>()));
+  locator.registerLazySingleton<AuthRepository>(
+      () => AuthRepository(locator<AuthService>()));
+
+  locator.registerLazySingleton<GroupRepository>(() => GroupRepository());
+  locator.registerLazySingleton<ExpenseRepository>(() => ExpenseRepository());
 }
