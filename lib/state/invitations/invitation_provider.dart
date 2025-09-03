@@ -21,7 +21,6 @@ class InvitationNotifier extends StateNotifier<InvitationState> {
       state = state.copyWith(invitations: invitations, isLoading: false);
     } on DioException catch (e) {
       state = state.copyWith(
-          isLoading: false, error: e.response?.data['message'] ?? e.message);
         isLoading: false,
         error: e.response?.data['message'] ?? e.message,
       );
@@ -30,10 +29,6 @@ class InvitationNotifier extends StateNotifier<InvitationState> {
     }
   }
 
-  Future<void> acceptInvitation(String invitationId) async {
-    state = state.copyWith(isLoading: true, error: null);
-    try {
-      await _repo.acceptInvitation(invitationId);
   Future<void> acceptInvitation(String token) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
@@ -42,7 +37,6 @@ class InvitationNotifier extends StateNotifier<InvitationState> {
       state = state.copyWith(invitations: invitations, isLoading: false);
     } on DioException catch (e) {
       state = state.copyWith(
-          isLoading: false, error: e.response?.data['message'] ?? e.message);
         isLoading: false,
         error: e.response?.data['message'] ?? e.message,
       );
@@ -51,3 +45,4 @@ class InvitationNotifier extends StateNotifier<InvitationState> {
     }
   }
 }
+

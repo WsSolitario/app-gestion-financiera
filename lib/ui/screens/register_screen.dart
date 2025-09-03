@@ -3,10 +3,18 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:go_router/go_router.dart";
 
 import "../../state/auth/auth_provider.dart";
+import "../../state/app_mode_provider.dart";
 import "../routes.dart";
 
 class RegisterScreen extends ConsumerStatefulWidget {
-  const RegisterScreen({super.key});
+  final String? registrationToken;
+  final String? invitationToken;
+
+  const RegisterScreen({
+    super.key,
+    this.registrationToken,
+    this.invitationToken,
+  });
 
   @override
   ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
@@ -17,10 +25,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  final _registrationToken = TextEditingController();
+  final _invitationToken = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(authNotifierProvider);
+    final appMode = ref.watch(appModeProvider);
+    final isPrivate = appMode == 'private';
 
     ref.listen(authNotifierProvider, (prev, next) {
       if (next is AuthRegistered) {
@@ -55,6 +67,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   obscureText: true,
                   validator: (v) => (v == null || v.isEmpty) ? "Requerido" : null,
                 ),
+                if (isPrivate) ...[
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _registrationToken,
+                    decoration:
+                        const InputDecoration(labelText: "Registration Token"),
+                    validator: (v) =>
+                        (isPrivate && (v == null || v.isEmpty)) ? "Requerido" : null,
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _invitationToken,
+                    decoration:
+                        const InputDecoration(labelText: "Invitation Token"),
+                  ),
+                ],
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: state is! AuthLoading
@@ -66,6 +94,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   name: _name.text.trim().isEmpty
                                       ? null
                                       : _name.text.trim(),
+                                  registrationToken: widget.registrationToken,
+                                  invitationToken: widget.invitationToken,
+                                  registrationToken:
+                                      _registrationToken.text.trim().isEmpty
+                                          ? null
+                                          : _registrationToken.text.trim(),
+                                  invitationToken:
+                                      _invitationToken.text.trim().isEmpty
+                                          ? null
+                                          : _invitationToken.text.trim(),
                                 );
                           }
                         }

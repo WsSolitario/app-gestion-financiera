@@ -9,7 +9,9 @@ import "../repositories/notification_repository.dart";
 import "../repositories/payment_repository.dart";
 import "../repositories/recurring_payment_repository.dart";
 import "../repositories/reports_repository.dart";
+import "../repositories/app_mode_repository.dart";
 import "../services/api_client.dart";
+import "../services/app_service.dart";
 import "../services/auth_service.dart";
 import "../services/expense_service.dart";
 import "../services/group_service.dart";
@@ -28,6 +30,7 @@ Future<void> setupLocator() async {
 
   // Services
   locator.registerLazySingleton<AuthService>(() => AuthService(locator<ApiClient>()));
+  locator.registerLazySingleton<AppService>(() => AppService(locator<ApiClient>()));
   locator.registerLazySingleton<GroupService>(() => GroupService(locator<ApiClient>()));
   locator.registerLazySingleton<ExpenseService>(() => ExpenseService(locator<ApiClient>()));
   locator.registerLazySingleton<InvitationService>(() => InvitationService(locator<ApiClient>()));
@@ -50,5 +53,7 @@ Future<void> setupLocator() async {
       () => RecurringPaymentRepository(locator<RecurringPaymentService>()));
   locator.registerLazySingleton<ReportsRepository>(
       () => ReportsRepository(locator<ReportsService>()));
+  locator.registerLazySingleton<AppModeRepository>(
+      () => AppModeRepository(locator<AppService>()));
 }
 
