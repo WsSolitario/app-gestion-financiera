@@ -20,11 +20,10 @@ import 'ui/screens/recurring_payments/recurring_payments_screen.dart';
 import 'ui/screens/reports/reports_screen.dart';
 import 'ui/screens/payments/payment_list_screen.dart';
 import 'ui/screens/invitations/invitation_list_screen.dart';
-import 'ui/screens/invitations/invitation_list_screen.dart';
 import 'ui/screens/invitations/invitation_accept_screen.dart';
-import 'ui/screens/payments/payment_list_screen.dart';
 import 'ui/screens/payments/payment_form_screen.dart';
 import 'ui/screens/payments/payment_approval_screen.dart';
+import 'state/app_mode/app_mode_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,11 +31,21 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appMode = ref.watch(appModeProvider);
+
+    if (appMode == null) {
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
     final router = GoRouter(
       initialLocation: AppRoutes.login,
       routes: [
@@ -96,27 +105,25 @@ class MyApp extends StatelessWidget {
             path: AppRoutes.invitationAccept,
             builder: (_, __) => const InvitationAcceptScreen()),
 
-        GoRoute(
-            path: '/groups/:id/payments',
-            builder: (_, state) =>
-                PaymentListScreen(groupId: state.pathParameters['id']!)),
-        GoRoute(
-            path: '/invitations',
-            builder: (_, __) => const InvitationListScreen()),
-            path: '/groups/:id/payments/new',
-            builder: (_, state) =>
-                PaymentFormScreen(groupId: state.pathParameters['id']!)),
-        GoRoute(
-            path: '/groups/:id/payments/:payId',
-            builder: (_, state) =>
-                PaymentApprovalScreen(id: state.pathParameters['payId']!)),
-      ],
-    );
+          GoRoute(
+              path: '/groups/:id/payments',
+              builder: (_, state) =>
+                  PaymentListScreen(groupId: state.pathParameters['id']!)),
+          GoRoute(
+              path: '/groups/:id/payments/new',
+              builder: (_, state) =>
+                  PaymentFormScreen(groupId: state.pathParameters['id']!)),
+          GoRoute(
+              path: '/groups/:id/payments/:payId',
+              builder: (_, state) =>
+                  PaymentApprovalScreen(id: state.pathParameters['payId']!)),
+        ],
+      );
 
-    return MaterialApp.router(
-      title: 'SSDS App',
-      routerConfig: router,
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
-    );
+      return MaterialApp.router(
+        title: 'SSDS App ($appMode)',
+        routerConfig: router,
+        theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
+      );
+    }
   }
-}
