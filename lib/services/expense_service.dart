@@ -3,6 +3,7 @@ import "package:dio/dio.dart";
 import "../models/expense.dart";
 import "../services/api_client.dart";
 
+/// Handles all expense-related network requests.
 class ExpenseService {
   final ApiClient _client;
   ExpenseService(this._client);

@@ -1,6 +1,8 @@
 import '../models/expense.dart';
 import '../services/expense_service.dart';
 
+/// Provides an abstraction over [ExpenseService] for fetching and
+/// mutating expense data.
 class ExpenseRepository {
   final ExpenseService _service;
   ExpenseRepository(this._service);

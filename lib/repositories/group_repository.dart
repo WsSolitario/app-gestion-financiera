@@ -1,7 +1,8 @@
-
 import '../models/group.dart';
 import '../services/group_service.dart';
 
+/// Provides an abstraction over [GroupService] for retrieving and
+/// managing groups.
 class GroupRepository {
   final GroupService _service;
   GroupRepository(this._service);
