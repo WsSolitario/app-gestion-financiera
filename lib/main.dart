@@ -104,6 +104,20 @@ class MyApp extends ConsumerWidget {
         GoRoute(
             path: AppRoutes.invitationAccept,
             builder: (_, __) => const InvitationAcceptScreen()),
+        GoRoute(
+            path: AppRoutes.payments,
+            builder: (_, state) =>
+                PaymentListScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
+            path: AppRoutes.paymentForm,
+            builder: (_, state) =>
+                PaymentFormScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
+            path: AppRoutes.paymentDetail,
+            builder: (_, state) =>
+                PaymentApprovalScreen(id: state.pathParameters['payId']!)),
+      ],
+    );
 
           GoRoute(
               path: '/groups/:id/payments',
