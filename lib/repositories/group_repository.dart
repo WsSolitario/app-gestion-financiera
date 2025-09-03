@@ -1,4 +1,5 @@
 
+// In-memory repository for managing groups.
 import '../models/group.dart';
 
 class GroupRepository {

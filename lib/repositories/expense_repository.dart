@@ -1,4 +1,5 @@
 import '../models/expense.dart';
+// In-memory repository for managing expenses.
 
 class ExpenseRepository {
   final List<Expense> _expenses = [];
