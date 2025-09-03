@@ -97,7 +97,7 @@ class AddExpensePage extends StatelessWidget {
           ),
           SizedBox(
             width: 60,
-            child: Text('\\$${amount.toStringAsFixed(2)}',
+            child: Text('\$${amount.toStringAsFixed(2)}',
                 textAlign: TextAlign.right),
           ),
         ],

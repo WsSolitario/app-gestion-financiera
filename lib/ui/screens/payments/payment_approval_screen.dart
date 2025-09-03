@@ -18,7 +18,7 @@ class PaymentApprovalScreen extends HookConsumerWidget {
       payment = state.payments.firstWhere((p) => p.id == id);
     } catch (_) {}
 
-    final location = GoRouter.of(context).location;
+    final location = GoRouterState.of(context).uri.toString();
     final segments = Uri.parse(location).pathSegments;
     final groupId = segments.length >= 2 ? segments[1] : '';
 
@@ -44,7 +44,7 @@ class PaymentApprovalScreen extends HookConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Monto: \\$${payment.amount.toStringAsFixed(2)}'),
+                          Text('Monto: \$${payment.amount.toStringAsFixed(2)}'),
                           if (payment.note != null)
                             Text('Nota: ${payment.note}'),
                           const SizedBox(height: 20),

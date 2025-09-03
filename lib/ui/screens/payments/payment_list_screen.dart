@@ -52,6 +52,12 @@ class PaymentListScreen extends HookConsumerWidget {
                                 ),
                               ],
                             )
+                          : Text(payment.status),
+                      title: Text('\$${payment.amount.toStringAsFixed(2)}'),
+                      subtitle: Text(payment.note ?? ''),
+                      trailing: Text(payment.status.name),
+                      onTap: () => context.push(
+                          '/groups/$groupId/payments/${payment.id}'),
                           : Text(payment.status.name),
                       onTap: () =>
                           context.push('/groups/$groupId/payments/${payment.id}'),
