@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:go_router/go_router.dart";
 
 import "../../state/auth/auth_provider.dart";
+import "../../state/auth/auth_state.dart";
 import "../../state/app_mode_provider.dart";
 import "../routes.dart";
 
