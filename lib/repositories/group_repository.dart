@@ -1,25 +1,20 @@
-
 import '../models/group.dart';
+import '../services/group_service.dart';
 
+/// Provides an abstraction over [GroupService] for retrieving and
+/// managing groups.
 class GroupRepository {
-  final List<Group> _groups = [];
+  final GroupService _service;
+  GroupRepository(this._service);
 
-  Future<List<Group>> fetchGroups() async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return [..._groups];
-  }
+  Future<List<Group>> fetchGroups() => _service.getGroups();
 
-  Future<Group> getGroup(String id) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return _groups.firstWhere((g) => g.id == id);
-  }
+  Future<Group> getGroup(String id) => _service.getGroup(id);
 
-  Future<Group> addGroup(String name) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    final group =
-        Group(id: DateTime.now().millisecondsSinceEpoch.toString(), name: name);
-    _groups.add(group);
-    return group;
-  }
+  Future<Group> addGroup(String name) => _service.createGroup(name);
 
+  Future<Group> updateGroup(String id, {required String name}) =>
+      _service.updateGroup(id, name: name);
+
+  Future<void> deleteGroup(String id) => _service.deleteGroup(id);
 }

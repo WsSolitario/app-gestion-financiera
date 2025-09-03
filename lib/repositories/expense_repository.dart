@@ -1,30 +1,24 @@
-
 import '../models/expense.dart';
+import '../services/expense_service.dart';
 
+/// Provides an abstraction over [ExpenseService] for fetching and
+/// mutating expense data.
 class ExpenseRepository {
-  final List<Expense> _expenses = [];
+  final ExpenseService _service;
+  ExpenseRepository(this._service);
 
-  Future<List<Expense>> fetchExpenses(String groupId) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return _expenses.where((e) => e.groupId == groupId).toList();
-  }
+  Future<List<Expense>> fetchExpenses(String groupId) =>
+      _service.getExpenses(groupId);
 
-  Future<Expense> getExpense(String id) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return _expenses.firstWhere((e) => e.id == id);
-  }
+  Future<Expense> getExpense(String id) => _service.getExpense(id);
 
   Future<Expense> addExpense(
-      String groupId, String description, double amount) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    final expense = Expense(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      groupId: groupId,
-      description: description,
-      amount: amount,
-    );
-    _expenses.add(expense);
-    return expense;
-  }
-=======
+          String groupId, String description, double amount) =>
+      _service.createExpense(groupId, description, amount);
 
+  Future<Expense> updateExpense(String id,
+          {String? description, double? amount}) =>
+      _service.updateExpense(id, description: description, amount: amount);
+
+  Future<void> deleteExpense(String id) => _service.deleteExpense(id);
+}
