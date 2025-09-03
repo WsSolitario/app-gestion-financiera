@@ -41,15 +41,6 @@ class DashboardScreen extends StatelessWidget {
               child: const Text('Reportes'),
             ),
           ],
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => context.push('/invitations'),
-              child: const Text('Ver invitaciones'),
-            ),
-          ],
-        child: ElevatedButton(
-          onPressed: () => context.push(AppRoutes.groups),
-          child: const Text('Ver grupos'),
         ),
       ),
     );
