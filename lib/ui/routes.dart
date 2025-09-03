@@ -12,8 +12,6 @@ class AppRoutes {
   static const notifications = '/notifications';
   static const recurringPayments = '/recurring-payments';
   static const reports = '/reports';
-  static const payments = '/groups/:id/payments';
-  static const invitations = '/invitations';
   static const invitations = '/invitations';
   static const invitationAccept = '/invitations/accept';
   static const groupMembers = '/groups/:id/members';

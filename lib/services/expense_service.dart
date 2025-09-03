@@ -15,7 +15,7 @@ class ExpenseService {
         if (startDate != null) "start_date": startDate.toIso8601String(),
         if (endDate != null) "end_date": endDate.toIso8601String(),
       };
-      final res = await _client.get("/expenses", queryParameters: params);
+      final res = await _client.get("/expenses", query: params);
       final data = res.data as List;
       return data.map((e) => Expense.fromJson(e)).toList();
     } on DioException catch (e) {

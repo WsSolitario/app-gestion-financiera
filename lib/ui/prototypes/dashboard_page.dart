@@ -52,7 +52,7 @@ class DashboardPage extends StatelessWidget {
       leading: const CircleAvatar(backgroundColor: accentColor),
       title: Text(title),
       subtitle: Text(cat),
-      trailing: Text('\\$${amount.toStringAsFixed(2)}'),
+      trailing: Text('\$${amount.toStringAsFixed(2)}'),
     );
   }
 
@@ -61,7 +61,7 @@ class DashboardPage extends StatelessWidget {
       leading: const CircleAvatar(),
       title: Text(name),
       subtitle: Text(cat),
-      trailing: Text('\\$${amount.toStringAsFixed(2)}',
+      trailing: Text('\$${amount.toStringAsFixed(2)}',
           style: const TextStyle(color: Colors.red)),
     );
   }
