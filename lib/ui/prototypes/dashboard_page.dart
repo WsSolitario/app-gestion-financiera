@@ -16,7 +16,9 @@ class DashboardPage extends StatelessWidget {
         leading: Padding(
           padding: const EdgeInsets.all(8),
           child: CircleAvatar(
-            backgroundImage: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuA0yggCah09VSrWLQs9C3bO0qaPY6T5EAd4jaE6uIWX4VW8_3P6MvdqvbwlKldSns0Gcdzleo_2swHIoGE3URRxqpJabFv2d57SuoLNgdO0xBxgBZGCAUTZXAFauDXCy2aA9ivvFKXS_v10XQFXaCu1SAwO_K-ilKAq558MMlgEB5gQpLlGPKgCJBi90gHU3nftAnDkkLXTUPMDZxkvE5fpc9d3Q-Cnn_5Q3a50IYEqcprtZpnjEBgxhzw431yXQC4M7gUvioow5Cdr'),
+            backgroundImage: NetworkImage(
+              'https://lh3.googleusercontent.com/aida-public/AB6AXuA0yggCah09VSrWLQs9C3bO0qaPY6T5EAd4jaE6uIWX4VW8_3P6MvdqvbwlKldSns0Gcdzleo_2swHIoGE3URRxqpJabFv2d57SuoLNgdO0xBxgBZGCAUTZXAFauDXCy2aA9ivvFKXS_v10XQFXaCu1SAwO_K-ilKAq558MMlgEB5gQpLlGPKgCJBi90gHU3nftAnDkkLXTUPMDZxkvE5fpc9d3Q-Cnn_5Q3a50IYEqcprtZpnjEBgxhzw431yXQC4M7gUvioow5Cdr',
+            ),
           ),
         ),
       ),
@@ -35,11 +37,14 @@ class DashboardPage extends StatelessWidget {
           _activityTile('Alquiler', 'Sophia pagó su parte.', '4h'),
         ],
       ),
-      bottomNavigationBar: const BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.groups), label: 'Grupos'),
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.payments), label: 'Pagos'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
@@ -61,8 +66,10 @@ class DashboardPage extends StatelessWidget {
       leading: const CircleAvatar(),
       title: Text(name),
       subtitle: Text(cat),
-      trailing: Text('\$${amount.toStringAsFixed(2)}',
-          style: const TextStyle(color: Colors.red)),
+      trailing: Text(
+        '\$${amount.toStringAsFixed(2)}',
+        style: const TextStyle(color: Colors.red),
+      ),
     );
   }
 
@@ -83,9 +90,10 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 24, bottom: 8),
-      child: Text(text,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
-

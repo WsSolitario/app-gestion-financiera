@@ -36,49 +36,47 @@ class PaymentApprovalScreen extends HookConsumerWidget {
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.error != null
-              ? Center(child: Text(state.error!))
-              : payment == null
-                  ? const Center(child: Text('Pago no encontrado'))
-                  : Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Monto: \$${payment.amount.toStringAsFixed(2)}'),
-                          if (payment.note != null)
-                            Text('Nota: ${payment.note}'),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: OutlinedButton(
-                                  onPressed: () async {
-                                    await ref
-                                        .read(paymentNotifierProvider.notifier)
-                                        .rejectPayment(payment!.id);
-                                    if (context.mounted) context.pop();
-                                  },
-                                  child: const Text('Rechazar'),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    await ref
-                                        .read(paymentNotifierProvider.notifier)
-                                        .approvePayment(payment!.id);
-                                    if (context.mounted) context.pop();
-                                  },
-                                  child: const Text('Aprobar'),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+          ? Center(child: Text(state.error!))
+          : payment == null
+          ? const Center(child: Text('Pago no encontrado'))
+          : Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Monto: \$${payment.amount.toStringAsFixed(2)}'),
+                  if (payment.note != null) Text('Nota: ${payment.note}'),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () async {
+                            await ref
+                                .read(paymentNotifierProvider.notifier)
+                                .rejectPayment(payment!.id, groupId);
+                            if (context.mounted) context.pop();
+                          },
+                          child: const Text('Rechazar'),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await ref
+                                .read(paymentNotifierProvider.notifier)
+                                .approvePayment(payment!.id, groupId);
+                            if (context.mounted) context.pop();
+                          },
+                          child: const Text('Aprobar'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }
-
