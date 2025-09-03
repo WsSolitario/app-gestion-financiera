@@ -47,6 +47,7 @@ class GroupDetailScreen extends HookConsumerWidget {
                                 context.push('/groups/${group.id}/expenses'),
                             child: const Text('Ver gastos'),
                           ),
+                          const SizedBox(height: 8),
 
                           const SizedBox(height: 10),
                           ElevatedButton(
@@ -64,7 +65,7 @@ class GroupDetailScreen extends HookConsumerWidget {
                             onPressed: () =>
                                 context.push('/groups/${group.id}/payments'),
                             child: const Text('Ver pagos'),
-                            main
+
                           ),
                         ],
                       ),

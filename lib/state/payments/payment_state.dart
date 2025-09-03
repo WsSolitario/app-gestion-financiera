@@ -25,4 +25,3 @@ class PaymentState {
 
   factory PaymentState.initial() => const PaymentState();
 }
-

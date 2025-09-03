@@ -14,6 +14,7 @@ class PaymentListScreen extends HookConsumerWidget {
     final state = ref.watch(paymentNotifierProvider);
 
     useEffect(() {
+      ref.read(paymentNotifierProvider.notifier).fetchPayments(groupId);
       ref.read(paymentNotifierProvider.notifier).fetchPayments(groupId: groupId);
       return null;
     }, [groupId]);
@@ -29,6 +30,29 @@ class PaymentListScreen extends HookConsumerWidget {
                   itemBuilder: (_, index) {
                     final payment = state.payments[index];
                     return ListTile(
+                      title: Text(
+                          '${payment.fromUserId} → ${payment.toUserId}'),
+                      subtitle:
+                          Text('\$${payment.amount.toStringAsFixed(2)}'),
+                      trailing: payment.status == 'pending'
+                          ? Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () => ref
+                                      .read(paymentNotifierProvider.notifier)
+                                      .rejectPayment(payment.id, groupId),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.check),
+                                  onPressed: () => ref
+                                      .read(paymentNotifierProvider.notifier)
+                                      .approvePayment(payment.id, groupId),
+                                ),
+                              ],
+                            )
+                          : Text(payment.status),
                       title: Text('\\$${payment.amount.toStringAsFixed(2)}'),
                       subtitle: Text(payment.note ?? ''),
                       trailing: Text(payment.status.name),
@@ -38,10 +62,12 @@ class PaymentListScreen extends HookConsumerWidget {
                   },
                 ),
       floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Placeholder for payment creation
+        },
         onPressed: () => context.push('/groups/$groupId/payments/new'),
         child: const Icon(Icons.add),
       ),
     );
   }
 }
-

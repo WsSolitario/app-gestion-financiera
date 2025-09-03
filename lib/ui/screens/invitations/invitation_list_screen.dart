@@ -14,6 +14,7 @@ class InvitationListScreen extends HookConsumerWidget {
     useEffect(() {
       ref.read(invitationNotifierProvider.notifier).fetchInvitations();
       return null;
+    }, const []);
     }, []);
 
     return Scaffold(
@@ -29,6 +30,14 @@ class InvitationListScreen extends HookConsumerWidget {
                     return ListTile(
                       title: Text(invitation.email),
                       subtitle: Text(invitation.status),
+                      trailing: invitation.status == 'pending'
+                          ? ElevatedButton(
+                              onPressed: () => ref
+                                  .read(invitationNotifierProvider.notifier)
+                                  .acceptInvitation(invitation.id),
+                              child: const Text('Aceptar'),
+                            )
+                          : null,
                     );
                   },
                 ),
