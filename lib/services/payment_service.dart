@@ -16,7 +16,7 @@ class PaymentService {
     String? endDate,    // YYYY-MM-DD
   }) async {
     try {
-      final res = await _client.get("/payments", queryParameters: {
+      final res = await _client.get("/payments", query: {
         if (groupId != null) "groupId": groupId,
         if (status != null) "status": status,
         if (direction != null) "direction": direction,
@@ -91,7 +91,7 @@ class PaymentService {
     try {
       final res = await _client.get(
         "/payments/due",
-        queryParameters: {
+        query: {
           if (groupId != null) "groupId": groupId,
         },
       );

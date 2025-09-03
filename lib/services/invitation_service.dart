@@ -12,7 +12,7 @@ class InvitationService {
     try {
       final res = await _client.get(
         "/invitations",
-        queryParameters: {
+        query: {
           if (mine != null) "mine": mine.toString(),
           if (groupId != null) "groupId": groupId,
         },
