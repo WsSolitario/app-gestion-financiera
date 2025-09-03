@@ -109,7 +109,6 @@ class MyApp extends ConsumerWidget {
             builder: (_, state) =>
                 PaymentListScreen(groupId: state.pathParameters['id']!)),
         GoRoute(
-            path: '/groups/:id/payments/new',
             path: AppRoutes.paymentForm,
             builder: (_, state) =>
                 PaymentFormScreen(groupId: state.pathParameters['id']!)),
@@ -118,21 +117,6 @@ class MyApp extends ConsumerWidget {
             builder: (_, state) =>
                 PaymentApprovalScreen(id: state.pathParameters['payId']!)),
       ],
-    );
-
-          GoRoute(
-              path: '/groups/:id/payments',
-              builder: (_, state) =>
-                  PaymentListScreen(groupId: state.pathParameters['id']!)),
-          GoRoute(
-              path: '/groups/:id/payments/new',
-              builder: (_, state) =>
-                  PaymentFormScreen(groupId: state.pathParameters['id']!)),
-          GoRoute(
-              path: '/groups/:id/payments/:payId',
-              builder: (_, state) =>
-                  PaymentApprovalScreen(id: state.pathParameters['payId']!)),
-        ],
       );
 
       return MaterialApp.router(
