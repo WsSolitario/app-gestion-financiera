@@ -9,4 +9,9 @@ class AppRoutes {
   static const expenseDetail = '/groups/:id/expenses/:expId';
   static const invitations = '/invitations';
   static const invitationAccept = '/invitations/accept';
+  static const groupMembers = '/groups/:id/members';
+  static const groupBalances = '/groups/:id/balances';
+  static const payments = '/groups/:id/payments';
+  static const paymentForm = '/groups/:id/payments/new';
+  static const paymentDetail = '/groups/:id/payments/:payId';
 }

@@ -15,10 +15,15 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
 
   ExpenseNotifier(this._repo) : super(ExpenseState.initial());
 
-  Future<void> fetchExpenses(String groupId) async {
+  Future<void> fetchExpenses(String groupId,
+      {DateTime? startDate, DateTime? endDate}) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final expenses = await _repo.getExpenses(groupId);
+      final expenses = await _repo.getExpenses(
+        groupId,
+        startDate: startDate,
+        endDate: endDate,
+      );
       state = state.copyWith(expenses: expenses, isLoading: false);
     } on DioException catch (e) {
       state = state.copyWith(
@@ -33,16 +38,24 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
   Future<void> addExpense(
     String groupId,
     String description,
-    double amount, {
+    double totalAmount, {
+    DateTime? expenseDate,
+    bool hasTicket = false,
+    String? ticketImageUrl,
     String? createdBy,
+    List<String> participants = const [],
   }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
       await _repo.createExpense(
         groupId,
         description,
-        amount,
+        totalAmount,
+        expenseDate: expenseDate,
+        hasTicket: hasTicket,
+        ticketImageUrl: ticketImageUrl,
         createdBy: createdBy,
+        participants: participants,
       );
       final expenses = await _repo.getExpenses(groupId);
       state = state.copyWith(expenses: expenses, isLoading: false);

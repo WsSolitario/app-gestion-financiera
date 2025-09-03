@@ -7,10 +7,15 @@ class ExpenseService {
   final ApiClient _client;
   ExpenseService(this._client);
 
-  Future<List<Expense>> getExpenses(String groupId) async {
+  Future<List<Expense>> getExpenses(String groupId,
+      {DateTime? startDate, DateTime? endDate}) async {
     try {
-      final res =
-          await _client.get("/expenses", queryParameters: {"groupId": groupId});
+      final params = {
+        "group_id": groupId,
+        if (startDate != null) "start_date": startDate.toIso8601String(),
+        if (endDate != null) "end_date": endDate.toIso8601String(),
+      };
+      final res = await _client.get("/expenses", queryParameters: params);
       final data = res.data as List;
       return data.map((e) => Expense.fromJson(e)).toList();
     } on DioException catch (e) {
@@ -19,14 +24,25 @@ class ExpenseService {
   }
 
   Future<Expense> createExpense(
-      String groupId, String description, double amount,
-      {String? createdBy}) async {
+    String groupId,
+    String description,
+    double totalAmount, {
+    DateTime? expenseDate,
+    bool hasTicket = false,
+    String? ticketImageUrl,
+    String? createdBy,
+    List<String> participants = const [],
+  }) async {
     try {
       final res = await _client.post("/expenses", data: {
-        "groupId": groupId,
+        "group_id": groupId,
         "description": description,
-        "amount": amount,
-        if (createdBy != null) "createdBy": createdBy,
+        "total_amount": totalAmount,
+        "expense_date": expenseDate?.toIso8601String(),
+        "has_ticket": hasTicket,
+        "ticket_image_url": ticketImageUrl,
+        "participants": participants,
+        if (createdBy != null) "created_by": createdBy,
       });
       return Expense.fromJson(res.data);
     } on DioException catch (e) {
@@ -34,15 +50,27 @@ class ExpenseService {
     }
   }
 
-  Future<Expense> updateExpense(String id, String groupId,
-      {String? description, double? amount}) async {
+  Future<Expense> updateExpense(
+    String id,
+    String groupId, {
+    String? description,
+    double? totalAmount,
+    DateTime? expenseDate,
+    bool? hasTicket,
+    String? ticketImageUrl,
+    List<String>? participants,
+  }) async {
     try {
-      final res = await _client.put("/expenses/$id",
-          queryParameters: {"groupId": groupId},
-          data: {
-            if (description != null) "description": description,
-            if (amount != null) "amount": amount,
-          });
+      final data = {
+        "group_id": groupId,
+        if (description != null) "description": description,
+        if (totalAmount != null) "total_amount": totalAmount,
+        if (expenseDate != null) "expense_date": expenseDate.toIso8601String(),
+        if (hasTicket != null) "has_ticket": hasTicket,
+        if (ticketImageUrl != null) "ticket_image_url": ticketImageUrl,
+        if (participants != null) "participants": participants,
+      };
+      final res = await _client.put("/expenses/$id", data: data);
       return Expense.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);

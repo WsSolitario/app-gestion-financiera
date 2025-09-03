@@ -8,11 +8,16 @@ import 'ui/screens/dashboard_screen.dart';
 import 'ui/screens/groups/group_list_screen.dart';
 import 'ui/screens/groups/group_detail_screen.dart';
 import 'ui/screens/groups/group_form_screen.dart';
+import 'ui/screens/groups/group_members_screen.dart';
+import 'ui/screens/groups/group_balances_screen.dart';
 import 'ui/screens/expenses/expense_list_screen.dart';
 import 'ui/screens/expenses/expense_detail_screen.dart';
 import 'ui/screens/expenses/expense_form_screen.dart';
 import 'ui/screens/invitations/invitation_list_screen.dart';
 import 'ui/screens/invitations/invitation_accept_screen.dart';
+import 'ui/screens/payments/payment_list_screen.dart';
+import 'ui/screens/payments/payment_form_screen.dart';
+import 'ui/screens/payments/payment_approval_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +46,14 @@ class MyApp extends StatelessWidget {
             builder: (_, state) =>
                 GroupDetailScreen(id: state.pathParameters['id']!)),
         GoRoute(
+            path: '/groups/:id/members',
+            builder: (_, state) =>
+                GroupMembersScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
+            path: '/groups/:id/balances',
+            builder: (_, state) =>
+                GroupBalancesScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
             path: '/groups/:id/expenses',
             builder: (_, state) =>
                 ExpenseListScreen(groupId: state.pathParameters['id']!)),
@@ -57,6 +70,18 @@ class MyApp extends StatelessWidget {
         GoRoute(
             path: AppRoutes.invitationAccept,
             builder: (_, __) => const InvitationAcceptScreen()),
+        GoRoute(
+            path: '/groups/:id/payments',
+            builder: (_, state) =>
+                PaymentListScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
+            path: '/groups/:id/payments/new',
+            builder: (_, state) =>
+                PaymentFormScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
+            path: '/groups/:id/payments/:payId',
+            builder: (_, state) =>
+                PaymentApprovalScreen(id: state.pathParameters['payId']!)),
       ],
     );
 
