@@ -1,26 +1,29 @@
 import "package:dio/dio.dart";
 
+import "../models/invitation.dart";
 import "../services/api_client.dart";
 
 class InvitationService {
   final ApiClient _client;
   InvitationService(this._client);
 
-  Future<List<dynamic>> getInvitations() async {
+  Future<List<Invitation>> getInvitations() async {
     try {
       final res = await _client.get("/invitations");
-      return List<dynamic>.from(res.data);
+      final data = res.data as List;
+      return data.map((e) => Invitation.fromJson(e)).toList();
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
   }
 
-  Future<void> sendInvitation(String groupId, String email) async {
+  Future<Invitation> sendInvitation(String groupId, String email) async {
     try {
-      await _client.post("/invitations", data: {
+      final res = await _client.post("/invitations", data: {
         "groupId": groupId,
         "email": email,
       });
+      return Invitation.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }

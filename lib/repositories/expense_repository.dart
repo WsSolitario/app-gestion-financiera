@@ -16,12 +16,14 @@ class ExpenseRepository {
   Future<Expense> addExpense(
       String groupId, String description, double amount) async {
     await Future.delayed(const Duration(milliseconds: 200));
+    final now = DateTime.now();
     final expense = Expense(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       groupId: groupId,
       description: description,
       amount: amount,
-      createdAt: DateTime.now(),
+      createdAt: now,
+      updatedAt: now,
     );
     _expenses.add(expense);
     return expense;

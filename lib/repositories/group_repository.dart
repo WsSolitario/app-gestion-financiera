@@ -16,11 +16,13 @@ class GroupRepository {
 
   Future<Group> addGroup(String name, {String? description}) async {
     await Future.delayed(const Duration(milliseconds: 200));
+    final now = DateTime.now();
     final group = Group(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: name,
       description: description,
-      createdAt: DateTime.now(),
+      createdAt: now,
+      updatedAt: now,
     );
     _groups.add(group);
     return group;

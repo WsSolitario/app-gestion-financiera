@@ -5,6 +5,7 @@ class Invitation {
   final String status;
   final String? invitedBy;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Invitation({
     required this.id,
@@ -13,6 +14,7 @@ class Invitation {
     required this.status,
     this.invitedBy,
     this.createdAt,
+    this.updatedAt,
   });
 
   factory Invitation.fromJson(Map<String, dynamic> json) => Invitation(
@@ -24,6 +26,9 @@ class Invitation {
         createdAt: json['createdAt'] != null
             ? DateTime.parse(json['createdAt'])
             : null,
+        updatedAt: json['updatedAt'] != null
+            ? DateTime.parse(json['updatedAt'])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +38,7 @@ class Invitation {
         'status': status,
         'invitedBy': invitedBy,
         'createdAt': createdAt?.toIso8601String(),
+        'updatedAt': updatedAt?.toIso8601String(),
       };
 }
 

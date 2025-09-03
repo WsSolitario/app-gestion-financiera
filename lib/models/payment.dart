@@ -6,6 +6,7 @@ class Payment {
   final double amount;
   final String status;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Payment({
     required this.id,
@@ -15,6 +16,7 @@ class Payment {
     required this.amount,
     required this.status,
     this.createdAt,
+    this.updatedAt,
   });
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
@@ -27,6 +29,9 @@ class Payment {
         createdAt: json['createdAt'] != null
             ? DateTime.parse(json['createdAt'])
             : null,
+        updatedAt: json['updatedAt'] != null
+            ? DateTime.parse(json['updatedAt'])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +42,7 @@ class Payment {
         'amount': amount,
         'status': status,
         'createdAt': createdAt?.toIso8601String(),
+        'updatedAt': updatedAt?.toIso8601String(),
       };
 }
 
