@@ -23,10 +23,10 @@ class GroupNotifier extends StateNotifier<GroupState> {
     }
   }
 
-  Future<void> addGroup(String name) async {
+  Future<void> addGroup(String name, {String? description}) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await _repo.addGroup(name);
+      await _repo.addGroup(name, description: description);
       final groups = await _repo.fetchGroups();
       state = state.copyWith(groups: groups, isLoading: false);
     } catch (e) {

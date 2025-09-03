@@ -14,10 +14,14 @@ class GroupRepository {
     return _groups.firstWhere((g) => g.id == id);
   }
 
-  Future<Group> addGroup(String name) async {
+  Future<Group> addGroup(String name, {String? description}) async {
     await Future.delayed(const Duration(milliseconds: 200));
-    final group =
-        Group(id: DateTime.now().millisecondsSinceEpoch.toString(), name: name);
+    final group = Group(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      name: name,
+      description: description,
+      createdAt: DateTime.now(),
+    );
     _groups.add(group);
     return group;
   }
