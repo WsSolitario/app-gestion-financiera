@@ -109,6 +109,7 @@ class MyApp extends ConsumerWidget {
             builder: (_, state) =>
                 PaymentListScreen(groupId: state.pathParameters['id']!)),
         GoRoute(
+            path: '/groups/:id/payments/new',
             path: AppRoutes.paymentForm,
             builder: (_, state) =>
                 PaymentFormScreen(groupId: state.pathParameters['id']!)),
