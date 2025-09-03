@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dio/dio.dart';
 import '../../config/locator.dart';
 import '../../repositories/group_repository.dart';
 import '../../models/group.dart';
@@ -18,6 +19,9 @@ class GroupNotifier extends StateNotifier<GroupState> {
     try {
       final groups = await _repo.fetchGroups();
       state = state.copyWith(groups: groups, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(
+          isLoading: false, error: e.response?.data['message'] ?? e.message);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -29,6 +33,9 @@ class GroupNotifier extends StateNotifier<GroupState> {
       await _repo.addGroup(name, description: description);
       final groups = await _repo.fetchGroups();
       state = state.copyWith(groups: groups, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(
+          isLoading: false, error: e.response?.data['message'] ?? e.message);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }

@@ -12,6 +12,7 @@ class ExpenseFormScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final descController = useTextEditingController();
     final amountController = useTextEditingController();
+    final state = ref.watch(expenseNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Nuevo Gasto')),
@@ -30,17 +31,27 @@ class ExpenseFormScreen extends HookConsumerWidget {
                   const TextInputType.numberWithOptions(decimal: true),
             ),
             const SizedBox(height: 20),
+            if (state.error != null) ...[
+              Text(state.error!, style: const TextStyle(color: Colors.red)),
+              const SizedBox(height: 20),
+            ],
             ElevatedButton(
-              onPressed: () async {
-                final amount = double.tryParse(amountController.text) ?? 0;
-                await ref
-                    .read(expenseNotifierProvider.notifier)
-                    .addExpense(groupId, descController.text, amount);
-                if (context.mounted) {
-                  context.pop();
-                }
-              },
-              child: const Text('Guardar'),
+              onPressed: state.isLoading
+                  ? null
+                  : () async {
+                      final amount =
+                          double.tryParse(amountController.text) ?? 0;
+                      await ref
+                          .read(expenseNotifierProvider.notifier)
+                          .addExpense(groupId, descController.text, amount);
+                      final error = ref.read(expenseNotifierProvider).error;
+                      if (context.mounted && error == null) {
+                        context.pop();
+                      }
+                    },
+              child: state.isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('Guardar'),
             ),
           ],
         ),

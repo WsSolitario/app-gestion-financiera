@@ -20,16 +20,18 @@ class GroupListScreen extends HookConsumerWidget {
       appBar: AppBar(title: const Text('Grupos')),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: state.groups.length,
-              itemBuilder: (_, index) {
-                final group = state.groups[index];
-                return ListTile(
-                  title: Text(group.name),
-                  onTap: () => context.push('/groups/${group.id}'),
-                );
-              },
-            ),
+          : state.error != null
+              ? Center(child: Text(state.error!))
+              : ListView.builder(
+                  itemCount: state.groups.length,
+                  itemBuilder: (_, index) {
+                    final group = state.groups[index];
+                    return ListTile(
+                      title: Text(group.name),
+                      onTap: () => context.push('/groups/${group.id}'),
+                    );
+                  },
+                ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/groups/new'),
         child: const Icon(Icons.add),

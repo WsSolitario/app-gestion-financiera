@@ -21,18 +21,20 @@ class ExpenseListScreen extends HookConsumerWidget {
       appBar: AppBar(title: const Text('Gastos')),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: state.expenses.length,
-              itemBuilder: (_, index) {
-                final expense = state.expenses[index];
-                return ListTile(
-                  title: Text(expense.description),
-                  subtitle: Text('\\$${expense.amount.toStringAsFixed(2)}'),
-                  onTap: () =>
-                      context.push('/groups/$groupId/expenses/${expense.id}'),
-                );
-              },
-            ),
+          : state.error != null
+              ? Center(child: Text(state.error!))
+              : ListView.builder(
+                  itemCount: state.expenses.length,
+                  itemBuilder: (_, index) {
+                    final expense = state.expenses[index];
+                    return ListTile(
+                      title: Text(expense.description),
+                      subtitle: Text('\\$${expense.amount.toStringAsFixed(2)}'),
+                      onTap: () =>
+                          context.push('/groups/$groupId/expenses/${expense.id}'),
+                    );
+                  },
+                ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push('/groups/$groupId/expenses/new'),
         child: const Icon(Icons.add),
