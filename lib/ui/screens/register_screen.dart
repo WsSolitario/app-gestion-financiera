@@ -95,8 +95,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   name: _name.text.trim().isEmpty
                                       ? null
                                       : _name.text.trim(),
-                                  registrationToken: widget.registrationToken,
-                                  invitationToken: widget.invitationToken,
                                   registrationToken:
                                       _registrationToken.text.trim().isEmpty
                                           ? null
