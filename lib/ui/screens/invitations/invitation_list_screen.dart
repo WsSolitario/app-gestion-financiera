@@ -15,6 +15,7 @@ class InvitationListScreen extends HookConsumerWidget {
       ref.read(invitationNotifierProvider.notifier).fetchInvitations();
       return null;
     }, const []);
+    }, []);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Invitaciones')),

@@ -10,6 +10,6 @@ class InvitationRepository {
   Future<Invitation> sendInvitation(String groupId, String inviteeEmail) =>
       _service.sendInvitation(groupId, inviteeEmail);
 
-  Future<void> acceptInvitation(String invitationId) =>
-      _service.acceptInvitation(invitationId);
+  Future<void> acceptInvitation(String token) =>
+      _service.acceptInvitation(token);
 }

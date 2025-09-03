@@ -22,6 +22,9 @@ class InvitationNotifier extends StateNotifier<InvitationState> {
     } on DioException catch (e) {
       state = state.copyWith(
           isLoading: false, error: e.response?.data['message'] ?? e.message);
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -31,11 +34,18 @@ class InvitationNotifier extends StateNotifier<InvitationState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       await _repo.acceptInvitation(invitationId);
+  Future<void> acceptInvitation(String token) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      await _repo.acceptInvitation(token);
       final invitations = await _repo.fetchInvitations();
       state = state.copyWith(invitations: invitations, isLoading: false);
     } on DioException catch (e) {
       state = state.copyWith(
           isLoading: false, error: e.response?.data['message'] ?? e.message);
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }

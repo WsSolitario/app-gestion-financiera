@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../state/expenses/expense_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ExpenseFormScreen extends HookConsumerWidget {
+import '../../../state/payments/payment_provider.dart';
+
+class PaymentFormScreen extends HookConsumerWidget {
   final String groupId;
-  const ExpenseFormScreen({super.key, required this.groupId});
+  const PaymentFormScreen({super.key, required this.groupId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final descController = useTextEditingController();
+    final fromController = useTextEditingController();
+    final toController = useTextEditingController();
     final amountController = useTextEditingController();
-    final createdByController = useTextEditingController();
-    final state = ref.watch(expenseNotifierProvider);
+    final noteController = useTextEditingController();
+    final state = ref.watch(paymentNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Nuevo Gasto')),
+      appBar: AppBar(title: const Text('Nuevo Pago')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
-              controller: descController,
-              decoration: const InputDecoration(labelText: 'Descripción'),
+              controller: fromController,
+              decoration: const InputDecoration(labelText: 'De usuario'),
+            ),
+            TextField(
+              controller: toController,
+              decoration: const InputDecoration(labelText: 'A usuario'),
             ),
             TextField(
               controller: amountController,
@@ -32,8 +38,8 @@ class ExpenseFormScreen extends HookConsumerWidget {
                   const TextInputType.numberWithOptions(decimal: true),
             ),
             TextField(
-              controller: createdByController,
-              decoration: const InputDecoration(labelText: 'Creado por'),
+              controller: noteController,
+              decoration: const InputDecoration(labelText: 'Nota'),
             ),
             const SizedBox(height: 20),
             if (state.error != null) ...[
@@ -46,17 +52,16 @@ class ExpenseFormScreen extends HookConsumerWidget {
                   : () async {
                       final amount =
                           double.tryParse(amountController.text) ?? 0;
-                      await ref
-                          .read(expenseNotifierProvider.notifier)
-                          .addExpense(
-                            groupId,
-                            descController.text,
-                            amount,
-                            expenseDate: DateTime.now(),
-                            createdBy: createdByController.text,
-                            participants: const [],
+                      await ref.read(paymentNotifierProvider.notifier).addPayment(
+                            groupId: groupId,
+                            fromUserId: fromController.text,
+                            toUserId: toController.text,
+                            amount: amount,
+                            note: noteController.text.isEmpty
+                                ? null
+                                : noteController.text,
                           );
-                      final error = ref.read(expenseNotifierProvider).error;
+                      final error = ref.read(paymentNotifierProvider).error;
                       if (context.mounted && error == null) {
                         context.pop();
                       }
@@ -71,3 +76,4 @@ class ExpenseFormScreen extends HookConsumerWidget {
     );
   }
 }
+

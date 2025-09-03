@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../state/payments/payment_provider.dart';
@@ -14,6 +15,7 @@ class PaymentListScreen extends HookConsumerWidget {
 
     useEffect(() {
       ref.read(paymentNotifierProvider.notifier).fetchPayments(groupId);
+      ref.read(paymentNotifierProvider.notifier).fetchPayments(groupId: groupId);
       return null;
     }, [groupId]);
 
@@ -51,6 +53,11 @@ class PaymentListScreen extends HookConsumerWidget {
                               ],
                             )
                           : Text(payment.status),
+                      title: Text('\\$${payment.amount.toStringAsFixed(2)}'),
+                      subtitle: Text(payment.note ?? ''),
+                      trailing: Text(payment.status.name),
+                      onTap: () => context.push(
+                          '/groups/$groupId/payments/${payment.id}'),
                     );
                   },
                 ),
@@ -58,6 +65,7 @@ class PaymentListScreen extends HookConsumerWidget {
         onPressed: () {
           // Placeholder for payment creation
         },
+        onPressed: () => context.push('/groups/$groupId/payments/new'),
         child: const Icon(Icons.add),
       ),
     );

@@ -1,18 +1,20 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "../../state/auth/auth_provider.dart";
 import "package:go_router/go_router.dart";
+
+import "../../state/auth/auth_provider.dart";
 import "../routes.dart";
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends ConsumerStatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
 
@@ -21,13 +23,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final state = ref.watch(authNotifierProvider);
 
     ref.listen(authNotifierProvider, (prev, next) {
-      if (next is AuthAuthenticated) {
-        context.go(AppRoutes.dashboard);
+      if (next is AuthRegistered) {
+        context.go(AppRoutes.login);
       }
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
+      appBar: AppBar(title: const Text("Registro")),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 420),
@@ -36,6 +38,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Form(
               key: _formKey,
               child: Column(mainAxisSize: MainAxisSize.min, children: [
+                TextFormField(
+                  controller: _name,
+                  decoration: const InputDecoration(labelText: "Nombre"),
+                ),
+                const SizedBox(height: 12),
                 TextFormField(
                   controller: _email,
                   decoration: const InputDecoration(labelText: "Email"),
@@ -53,18 +60,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onPressed: state is! AuthLoading
                       ? () {
                           if (_formKey.currentState!.validate()) {
-                            ref.read(authNotifierProvider.notifier).login(
+                            ref.read(authNotifierProvider.notifier).register(
                                   _email.text.trim(),
                                   _password.text.trim(),
+                                  name: _name.text.trim().isEmpty
+                                      ? null
+                                      : _name.text.trim(),
                                 );
                           }
                         }
                       : null,
-                  child: Text(state is AuthLoading ? "Entrando..." : "Entrar"),
+                  child:
+                      Text(state is AuthLoading ? "Registrando..." : "Registrar"),
                 ),
+                const SizedBox(height: 12),
                 TextButton(
-                  onPressed: () => context.go(AppRoutes.register),
-                  child: const Text("Crear cuenta"),
+                  onPressed: () => context.go(AppRoutes.login),
+                  child: const Text("¿Ya tienes cuenta? Inicia sesión"),
                 ),
                 if (state is AuthError) ...[
                   const SizedBox(height: 12),
