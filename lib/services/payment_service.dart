@@ -65,4 +65,24 @@ class PaymentService {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
   }
+
+  /// POST /api/payments/{id}/approve
+  Future<Payment> approvePayment(String id) async {
+    try {
+      final res = await _client.post("/payments/$id/approve");
+      return Payment.fromJson(res.data);
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  /// POST /api/payments/{id}/reject
+  Future<Payment> rejectPayment(String id) async {
+    try {
+      final res = await _client.post("/payments/$id/reject");
+      return Payment.fromJson(res.data);
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
 }

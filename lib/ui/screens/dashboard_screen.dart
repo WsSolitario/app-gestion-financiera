@@ -9,9 +9,19 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Dashboard')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => context.push('/groups'),
-          child: const Text('Ver grupos'),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: () => context.push('/groups'),
+              child: const Text('Ver grupos'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => context.push('/invitations'),
+              child: const Text('Ver invitaciones'),
+            ),
+          ],
         ),
       ),
     );
