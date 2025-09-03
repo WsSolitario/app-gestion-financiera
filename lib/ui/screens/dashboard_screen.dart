@@ -41,8 +41,8 @@ class DashboardScreen extends StatelessWidget {
               child: const Text('Reportes'),
             ),
           ],
-
         ),
-      );
-    }
+      ),
+    );
   }
+}
