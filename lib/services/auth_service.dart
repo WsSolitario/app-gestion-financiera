@@ -1,3 +1,5 @@
+import "package:dio/dio.dart";
+
 import "../services/api_client.dart";
 import "../models/user.dart";
 
@@ -27,16 +29,33 @@ class AuthService {
     String? invitationToken,
     List<String> tokens = const [],
   }) async {
-    final res = await _client.post("/auth/register", data: {
-      "email": email,
-      "password": password,
-      "password_confirmation": password,
-      "name": name,
-      "tokens": tokens,
-      "registration_token": registrationToken,
-      "invitation_token": invitationToken,
-    });
-    return User.fromJson(res.data["user"]);
+    try {
+      final res = await _client.post("/auth/register", data: {
+        "email": email,
+        "password": password,
+        "password_confirmation": password,
+        "name": name,
+        "tokens": tokens,
+        "registration_token": registrationToken,
+        "invitation_token": invitationToken,
+      });
+      return User.fromJson(res.data["user"]);
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 422) {
+        final errors = e.response?.data["errors"];
+        if (errors is Map) {
+          if (errors["registration_token"] != null) {
+            final msg = (errors["registration_token"] as List).first;
+            throw Exception(msg);
+          }
+          if (errors["invitation_token"] != null) {
+            final msg = (errors["invitation_token"] as List).first;
+            throw Exception(msg);
+          }
+        }
+      }
+      throw Exception(e.message);
+    }
   }
 
   Future<User> updateProfile(
