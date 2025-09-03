@@ -39,11 +39,25 @@ class GroupDetailScreen extends HookConsumerWidget {
                             children: [
                           Text('ID: ${group.id}'),
                           Text('Nombre: ${group.name}'),
+                          if (group.description != null)
+                            Text('Descripción: ${group.description}'),
                           const SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () =>
                                 context.push('/groups/${group.id}/expenses'),
                             child: const Text('Ver gastos'),
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () =>
+                                context.push('/groups/${group.id}/members'),
+                            child: const Text('Gestionar miembros'),
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () =>
+                                context.push('/groups/${group.id}/balances'),
+                            child: const Text('Ver balances'),
                           ),
                         ],
                       ),

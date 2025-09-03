@@ -10,6 +10,7 @@ class GroupFormScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final nameController = useTextEditingController();
+    final descriptionController = useTextEditingController();
     final state = ref.watch(groupNotifierProvider);
 
     return Scaffold(
@@ -23,6 +24,11 @@ class GroupFormScreen extends HookConsumerWidget {
               decoration: const InputDecoration(labelText: 'Nombre'),
             ),
             const SizedBox(height: 20),
+            TextField(
+              controller: descriptionController,
+              decoration: const InputDecoration(labelText: 'Descripción'),
+            ),
+            const SizedBox(height: 20),
             if (state.error != null) ...[
               Text(state.error!, style: const TextStyle(color: Colors.red)),
               const SizedBox(height: 20),
@@ -33,7 +39,8 @@ class GroupFormScreen extends HookConsumerWidget {
                   : () async {
                       await ref
                           .read(groupNotifierProvider.notifier)
-                          .addGroup(nameController.text);
+                          .addGroup(nameController.text,
+                              description: descriptionController.text);
                       final error = ref.read(groupNotifierProvider).error;
                       if (context.mounted && error == null) {
                         context.pop();

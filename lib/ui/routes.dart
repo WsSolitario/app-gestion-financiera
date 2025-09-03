@@ -7,4 +7,6 @@ class AppRoutes {
   static const expenses = '/groups/:id/expenses';
   static const expenseForm = '/groups/:id/expenses/new';
   static const expenseDetail = '/groups/:id/expenses/:expId';
+  static const groupMembers = '/groups/:id/members';
+  static const groupBalances = '/groups/:id/balances';
 }

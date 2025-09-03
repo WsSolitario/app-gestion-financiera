@@ -26,18 +26,25 @@ class GroupService {
     }
   }
 
-  Future<Group> createGroup(String name) async {
+  Future<Group> createGroup(String name, {String? description}) async {
     try {
-      final res = await _client.post("/groups", data: {"name": name});
+      final res = await _client.post("/groups", data: {
+        "name": name,
+        if (description != null) "description": description,
+      });
       return Group.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
   }
 
-  Future<Group> updateGroup(String id, {required String name}) async {
+  Future<Group> updateGroup(String id,
+      {required String name, String? description}) async {
     try {
-      final res = await _client.put("/groups/$id", data: {"name": name});
+      final res = await _client.put("/groups/$id", data: {
+        "name": name,
+        if (description != null) "description": description,
+      });
       return Group.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
@@ -47,6 +54,46 @@ class GroupService {
   Future<void> deleteGroup(String id) async {
     try {
       await _client.delete("/groups/$id");
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  Future<void> addMember(String groupId, String userId, {String? role}) async {
+    try {
+      await _client.post("/groups/$groupId/members", data: {
+        "userId": userId,
+        if (role != null) "role": role,
+      });
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  Future<void> updateMemberRole(
+      String groupId, String memberId, String role) async {
+    try {
+      await _client.put("/groups/$groupId/members/$memberId", data: {
+        "role": role,
+      });
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  Future<void> deleteMember(String groupId, String memberId) async {
+    try {
+      await _client.delete("/groups/$groupId/members/$memberId");
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  Future<List<dynamic>> getBalances(String groupId) async {
+    try {
+      final res = await _client.get("/groups/$groupId/balances");
+      final data = res.data as List;
+      return data;
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }

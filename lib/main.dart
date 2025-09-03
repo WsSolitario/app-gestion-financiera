@@ -8,6 +8,8 @@ import 'ui/screens/dashboard_screen.dart';
 import 'ui/screens/groups/group_list_screen.dart';
 import 'ui/screens/groups/group_detail_screen.dart';
 import 'ui/screens/groups/group_form_screen.dart';
+import 'ui/screens/groups/group_members_screen.dart';
+import 'ui/screens/groups/group_balances_screen.dart';
 import 'ui/screens/expenses/expense_list_screen.dart';
 import 'ui/screens/expenses/expense_detail_screen.dart';
 import 'ui/screens/expenses/expense_form_screen.dart';
@@ -38,6 +40,14 @@ class MyApp extends StatelessWidget {
             path: '/groups/:id',
             builder: (_, state) =>
                 GroupDetailScreen(id: state.pathParameters['id']!)),
+        GoRoute(
+            path: '/groups/:id/members',
+            builder: (_, state) =>
+                GroupMembersScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
+            path: '/groups/:id/balances',
+            builder: (_, state) =>
+                GroupBalancesScreen(groupId: state.pathParameters['id']!)),
         GoRoute(
             path: '/groups/:id/expenses',
             builder: (_, state) =>
