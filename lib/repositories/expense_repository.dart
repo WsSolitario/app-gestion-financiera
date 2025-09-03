@@ -6,11 +6,17 @@ class ExpenseRepository {
   ExpenseRepository(this._service);
 
   Future<List<Expense>> fetchExpenses(String groupId) =>
-      _service.fetchExpenses(groupId);
+      _service.getExpenses(groupId);
 
   Future<Expense> getExpense(String id) => _service.getExpense(id);
 
   Future<Expense> addExpense(
           String groupId, String description, double amount) =>
-      _service.addExpense(groupId, description, amount);
+      _service.createExpense(groupId, description, amount);
+
+  Future<Expense> updateExpense(String id,
+          {String? description, double? amount}) =>
+      _service.updateExpense(id, description: description, amount: amount);
+
+  Future<void> deleteExpense(String id) => _service.deleteExpense(id);
 }
