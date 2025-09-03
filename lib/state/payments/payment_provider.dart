@@ -13,7 +13,6 @@ final paymentNotifierProvider =
 
 class PaymentNotifier extends StateNotifier<PaymentState> {
   final PaymentRepository _repo;
-
   PaymentNotifier(this._repo) : super(PaymentState.initial());
 
   Future<void> fetchPayments({
@@ -123,4 +122,3 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
     }
   }
 }
-

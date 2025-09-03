@@ -49,4 +49,3 @@ class PaymentRepository {
 
   Future<void> deletePayment(String id) => _service.deletePayment(id);
 }
-
