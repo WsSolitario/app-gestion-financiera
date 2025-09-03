@@ -5,6 +5,8 @@ import 'config/locator.dart';
 import 'ui/routes.dart';
 import 'ui/screens/login_screen.dart';
 import 'ui/screens/dashboard_screen.dart';
+import 'ui/screens/register_screen.dart';
+import 'ui/screens/profile_screen.dart';
 import 'ui/screens/groups/group_list_screen.dart';
 import 'ui/screens/groups/group_detail_screen.dart';
 import 'ui/screens/groups/group_form_screen.dart';
@@ -35,8 +37,12 @@ class MyApp extends StatelessWidget {
       routes: [
         GoRoute(path: AppRoutes.login, builder: (_, __) => const LoginScreen()),
         GoRoute(
+            path: AppRoutes.register, builder: (_, __) => const RegisterScreen()),
+        GoRoute(
             path: AppRoutes.dashboard,
             builder: (_, __) => const DashboardScreen()),
+        GoRoute(
+            path: AppRoutes.profile, builder: (_, __) => const ProfileScreen()),
         GoRoute(path: AppRoutes.groups,
             builder: (_, __) => const GroupListScreen()),
         GoRoute(path: AppRoutes.groupForm,
