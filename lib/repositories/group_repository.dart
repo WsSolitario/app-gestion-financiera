@@ -14,12 +14,12 @@ class GroupRepository {
     return _service.getGroup(id);
   }
 
-  Future<Group> createGroup(String name) async {
-    return _service.createGroup(name);
+  Future<Group> createGroup(String name, {String? description}) async {
+    return _service.createGroup(name, description: description);
   }
 
-  Future<Group> updateGroup(String id, {required String name}) async {
-    return _service.updateGroup(id, name: name);
+  Future<Group> updateGroup(String id, {required String name, String? description}) async {
+    return _service.updateGroup(id, name: name, description: description);
   }
 
   Future<void> deleteGroup(String id) async {

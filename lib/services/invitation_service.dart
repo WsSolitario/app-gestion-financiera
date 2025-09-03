@@ -1,35 +1,55 @@
 import "package:dio/dio.dart";
 
+import "../models/invitation.dart";
 import "../services/api_client.dart";
 
 class InvitationService {
   final ApiClient _client;
   InvitationService(this._client);
 
-  Future<List<dynamic>> getInvitations() async {
+  /// GET /api/invitations[?mine=true][&groupId=UUID]
+  Future<List<Invitation>> getInvitations({bool? mine, String? groupId}) async {
     try {
-      final res = await _client.get("/invitations");
-      return List<dynamic>.from(res.data);
+      final res = await _client.get(
+        "/invitations",
+        queryParameters: {
+          if (mine != null) "mine": mine.toString(),
+          if (groupId != null) "groupId": groupId,
+        },
+      );
+      final data = res.data as List;
+      return data.map((e) => Invitation.fromJson(e)).toList();
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
   }
 
-  Future<void> sendInvitation(String groupId, String inviteeEmail) async {
+  /// POST /api/invitations
+  /// Body: { "invitee_email": "...", "group_id": "UUID", "expires_in_days"?: int }
+  /// Respuesta: { "token": "INVITE-TOKEN" } (tu modelo puede mapearlo).
+  Future<Invitation> sendInvitation(
+    String groupId,
+    String inviteeEmail, {
+    int? expiresInDays,
+  }) async {
     try {
-      await _client.post("/invitations", data: {
-        "group_id": groupId,
+      final res = await _client.post("/invitations", data: {
         "invitee_email": inviteeEmail,
+        "group_id": groupId,
+        if (expiresInDays != null) "expires_in_days": expiresInDays,
       });
+      return Invitation.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
   }
 
-  Future<void> acceptInvitation(String invitationId) async {
+  /// POST /api/invitations/accept
+  /// Body: { "token": "INVITE-TOKEN" }
+  Future<void> acceptInvitation(String token) async {
     try {
       await _client.post("/invitations/accept", data: {
-        "invitation_id": invitationId,
+        "token": token,
       });
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
