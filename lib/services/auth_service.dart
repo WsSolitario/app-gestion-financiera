@@ -19,14 +19,22 @@ class AuthService {
   Future<void> logout({bool all = false}) =>
       _client.post("/auth/logout", query: {"all": all});
 
-  Future<User> register(String email, String password,
-      {String? name, List<String> tokens = const []}) async {
+  Future<User> register(
+    String email,
+    String password, {
+    String? name,
+    String? registrationToken,
+    String? invitationToken,
+    List<String> tokens = const [],
+  }) async {
     final res = await _client.post("/auth/register", data: {
       "email": email,
       "password": password,
       "password_confirmation": password,
       "name": name,
       "tokens": tokens,
+      "registration_token": registrationToken,
+      "invitation_token": invitationToken,
     });
     return User.fromJson(res.data["user"]);
   }
