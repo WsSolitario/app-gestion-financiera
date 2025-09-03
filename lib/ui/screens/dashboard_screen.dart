@@ -17,36 +17,31 @@ class DashboardScreen extends StatelessWidget {
           )
         ],
       ),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () => context.push(AppRoutes.groups),
-                child: const Text('Ver grupos'),
-              ),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () => context.push('/notifications'),
-                child: const Text('Notificaciones'),
-              ),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () => context.push('/recurring-payments'),
-                child: const Text('Pagos recurrentes'),
-              ),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () => context.push('/reports'),
-                child: const Text('Reportes'),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => context.push(AppRoutes.invitations),
-                child: const Text('Ver invitaciones'),
-              ),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: () => context.push('/groups'),
+              child: const Text('Ver grupos'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () => context.push('/notifications'),
+              child: const Text('Notificaciones'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () => context.push('/recurring-payments'),
+              child: const Text('Pagos recurrentes'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () => context.push('/reports'),
+              child: const Text('Reportes'),
+            ),
+          ],
+
         ),
       );
     }
