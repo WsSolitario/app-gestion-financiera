@@ -6,6 +6,17 @@ class NotificationService {
   final ApiClient _client;
   NotificationService(this._client);
 
+  Future<void> registerDevice(String deviceToken, String deviceType) async {
+    try {
+      await _client.post("/notifications/register-device", data: {
+        "device_token": deviceToken,
+        "device_type": deviceType,
+      });
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
   Future<List<dynamic>> getNotifications() async {
     try {
       final res = await _client.get("/notifications");
