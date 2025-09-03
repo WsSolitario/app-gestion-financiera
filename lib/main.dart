@@ -20,9 +20,7 @@ import 'ui/screens/recurring_payments/recurring_payments_screen.dart';
 import 'ui/screens/reports/reports_screen.dart';
 import 'ui/screens/payments/payment_list_screen.dart';
 import 'ui/screens/invitations/invitation_list_screen.dart';
-import 'ui/screens/invitations/invitation_list_screen.dart';
 import 'ui/screens/invitations/invitation_accept_screen.dart';
-import 'ui/screens/payments/payment_list_screen.dart';
 import 'ui/screens/payments/payment_form_screen.dart';
 import 'ui/screens/payments/payment_approval_screen.dart';
 
@@ -90,19 +88,16 @@ class MyApp extends StatelessWidget {
         GoRoute(
             path: AppRoutes.invitationAccept,
             builder: (_, __) => const InvitationAcceptScreen()),
-
         GoRoute(
-            path: '/groups/:id/payments',
+            path: AppRoutes.payments,
             builder: (_, state) =>
                 PaymentListScreen(groupId: state.pathParameters['id']!)),
         GoRoute(
-            path: '/invitations',
-            builder: (_, __) => const InvitationListScreen()),
-            path: '/groups/:id/payments/new',
+            path: AppRoutes.paymentForm,
             builder: (_, state) =>
                 PaymentFormScreen(groupId: state.pathParameters['id']!)),
         GoRoute(
-            path: '/groups/:id/payments/:payId',
+            path: AppRoutes.paymentDetail,
             builder: (_, state) =>
                 PaymentApprovalScreen(id: state.pathParameters['payId']!)),
       ],
