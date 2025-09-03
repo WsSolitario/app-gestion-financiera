@@ -42,7 +42,12 @@ class MyApp extends StatelessWidget {
       routes: [
         GoRoute(path: AppRoutes.login, builder: (_, __) => const LoginScreen()),
         GoRoute(
-            path: AppRoutes.register, builder: (_, __) => const RegisterScreen()),
+          path: AppRoutes.register,
+          builder: (_, state) => RegisterScreen(
+            registrationToken: state.uri.queryParameters['registration_token'],
+            invitationToken: state.uri.queryParameters['invitation_token'],
+          ),
+        ),
         GoRoute(
             path: AppRoutes.dashboard,
             builder: (_, __) => const DashboardScreen()),
