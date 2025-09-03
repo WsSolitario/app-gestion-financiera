@@ -90,7 +90,7 @@ Widget _expenseTile(String title, String category, double amount) {
     leading: const CircleAvatar(backgroundColor: accentColor),
     title: Text(title),
     subtitle: Text(category, style: const TextStyle(color: textSecondary)),
-    trailing: Text('\\$${amount.toStringAsFixed(2)}',
+    trailing: Text('\$${amount.toStringAsFixed(2)}',
         style: const TextStyle(fontWeight: FontWeight.bold)),
   );
 }
@@ -103,7 +103,7 @@ Widget _balanceTile(String name, double amount) {
     leading: const CircleAvatar(),
     title: Text(name),
     subtitle: Text(text, style: TextStyle(color: color)),
-    trailing: Text('\\$${amount.abs().toStringAsFixed(2)}',
+    trailing: Text('\$${amount.abs().toStringAsFixed(2)}',
         style: TextStyle(fontWeight: FontWeight.bold, color: color)),
   );
 }
