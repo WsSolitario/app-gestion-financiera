@@ -5,10 +5,12 @@ class ExpenseRepository {
   final ExpenseService _service;
   ExpenseRepository(this._service);
 
+  /// Retrieve all expenses for the specified group.
   Future<List<Expense>> getExpenses(String groupId) async {
     return _service.getExpenses(groupId);
   }
 
+  /// Create a new expense in the given group.
   Future<Expense> createExpense(
       String groupId, String description, double amount,
       {String? createdBy}) async {
@@ -16,12 +18,14 @@ class ExpenseRepository {
         createdBy: createdBy);
   }
 
+  /// Update an existing expense.
   Future<Expense> updateExpense(String id, String groupId,
       {String? description, double? amount}) async {
     return _service.updateExpense(id, groupId,
         description: description, amount: amount);
   }
 
+  /// Remove an expense by its identifier.
   Future<void> deleteExpense(String id) async {
     await _service.deleteExpense(id);
   }
