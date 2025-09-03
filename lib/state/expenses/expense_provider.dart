@@ -28,10 +28,12 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
   }
 
   Future<void> addExpense(
-      String groupId, String description, double amount) async {
+      String groupId, String description, double amount,
+      {String? createdBy}) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await _repo.addExpense(groupId, description, amount);
+      await _repo.addExpense(groupId, description, amount,
+          createdBy: createdBy);
       final expenses = await _repo.fetchExpenses(groupId);
       state = state.copyWith(expenses: expenses, isLoading: false);
     } on DioException catch (e) {
