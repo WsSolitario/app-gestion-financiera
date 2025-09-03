@@ -13,6 +13,8 @@ import 'ui/screens/groups/group_balances_screen.dart';
 import 'ui/screens/expenses/expense_list_screen.dart';
 import 'ui/screens/expenses/expense_detail_screen.dart';
 import 'ui/screens/expenses/expense_form_screen.dart';
+import 'ui/screens/invitations/invitation_list_screen.dart';
+import 'ui/screens/invitations/invitation_accept_screen.dart';
 import 'ui/screens/payments/payment_list_screen.dart';
 import 'ui/screens/payments/payment_form_screen.dart';
 import 'ui/screens/payments/payment_approval_screen.dart';
@@ -63,6 +65,11 @@ class MyApp extends StatelessWidget {
             path: '/groups/:id/expenses/:expId',
             builder: (_, state) =>
                 ExpenseDetailScreen(id: state.pathParameters['expId']!)),
+        GoRoute(path: AppRoutes.invitations,
+            builder: (_, __) => const InvitationListScreen()),
+        GoRoute(
+            path: AppRoutes.invitationAccept,
+            builder: (_, __) => const InvitationAcceptScreen()),
         GoRoute(
             path: '/groups/:id/payments',
             builder: (_, state) =>
