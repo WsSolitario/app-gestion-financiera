@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dio/dio.dart';
 import '../../config/locator.dart';
 import '../../repositories/expense_repository.dart';
 import '../../models/expense.dart';
@@ -18,6 +19,9 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
     try {
       final expenses = await _repo.fetchExpenses(groupId);
       state = state.copyWith(expenses: expenses, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(
+          isLoading: false, error: e.response?.data['message'] ?? e.message);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -30,6 +34,9 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
       await _repo.addExpense(groupId, description, amount);
       final expenses = await _repo.fetchExpenses(groupId);
       state = state.copyWith(expenses: expenses, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(
+          isLoading: false, error: e.response?.data['message'] ?? e.message);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }

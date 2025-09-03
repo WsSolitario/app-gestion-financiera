@@ -10,6 +10,7 @@ class GroupFormScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final nameController = useTextEditingController();
+    final state = ref.watch(groupNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Nuevo Grupo')),
@@ -22,16 +23,25 @@ class GroupFormScreen extends HookConsumerWidget {
               decoration: const InputDecoration(labelText: 'Nombre'),
             ),
             const SizedBox(height: 20),
+            if (state.error != null) ...[
+              Text(state.error!, style: const TextStyle(color: Colors.red)),
+              const SizedBox(height: 20),
+            ],
             ElevatedButton(
-              onPressed: () async {
-                await ref
-                    .read(groupNotifierProvider.notifier)
-                    .addGroup(nameController.text);
-                if (context.mounted) {
-                  context.pop();
-                }
-              },
-              child: const Text('Guardar'),
+              onPressed: state.isLoading
+                  ? null
+                  : () async {
+                      await ref
+                          .read(groupNotifierProvider.notifier)
+                          .addGroup(nameController.text);
+                      final error = ref.read(groupNotifierProvider).error;
+                      if (context.mounted && error == null) {
+                        context.pop();
+                      }
+                    },
+              child: state.isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('Guardar'),
             ),
           ],
         ),
