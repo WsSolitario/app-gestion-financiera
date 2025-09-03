@@ -9,7 +9,8 @@ class ExpenseService {
 
   Future<List<Expense>> getExpenses(String groupId) async {
     try {
-      final res = await _client.get("/groups/$groupId/expenses");
+      final res =
+          await _client.get("/expenses", queryParameters: {"groupId": groupId});
       final data = res.data as List;
       return data.map((e) => Expense.fromJson(e)).toList();
     } on DioException catch (e) {
@@ -18,12 +19,14 @@ class ExpenseService {
   }
 
   Future<Expense> createExpense(
-      String groupId, String description, double amount) async {
+      String groupId, String description, double amount,
+      {String? createdBy}) async {
     try {
       final res = await _client.post("/expenses", data: {
         "groupId": groupId,
         "description": description,
         "amount": amount,
+        if (createdBy != null) "createdBy": createdBy,
       });
       return Expense.fromJson(res.data);
     } on DioException catch (e) {
@@ -31,13 +34,15 @@ class ExpenseService {
     }
   }
 
-  Future<Expense> updateExpense(String id,
+  Future<Expense> updateExpense(String id, String groupId,
       {String? description, double? amount}) async {
     try {
-      final res = await _client.put("/expenses/$id", data: {
-        if (description != null) "description": description,
-        if (amount != null) "amount": amount,
-      });
+      final res = await _client.put("/expenses/$id",
+          queryParameters: {"groupId": groupId},
+          data: {
+            if (description != null) "description": description,
+            if (amount != null) "amount": amount,
+          });
       return Expense.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
