@@ -1,4 +1,3 @@
-
 import '../models/expense.dart';
 
 class ExpenseRepository {
@@ -22,9 +21,10 @@ class ExpenseRepository {
       groupId: groupId,
       description: description,
       amount: amount,
+      createdAt: DateTime.now(),
     );
     _expenses.add(expense);
     return expense;
   }
-=======
+}
 
