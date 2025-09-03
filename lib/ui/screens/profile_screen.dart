@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 import "../../state/auth/auth_provider.dart";
+import "../../state/auth/auth_state.dart";
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
