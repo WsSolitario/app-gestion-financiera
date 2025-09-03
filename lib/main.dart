@@ -13,6 +13,9 @@ import 'ui/screens/groups/group_balances_screen.dart';
 import 'ui/screens/expenses/expense_list_screen.dart';
 import 'ui/screens/expenses/expense_detail_screen.dart';
 import 'ui/screens/expenses/expense_form_screen.dart';
+import 'ui/screens/payments/payment_list_screen.dart';
+import 'ui/screens/payments/payment_form_screen.dart';
+import 'ui/screens/payments/payment_approval_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +63,18 @@ class MyApp extends StatelessWidget {
             path: '/groups/:id/expenses/:expId',
             builder: (_, state) =>
                 ExpenseDetailScreen(id: state.pathParameters['expId']!)),
+        GoRoute(
+            path: '/groups/:id/payments',
+            builder: (_, state) =>
+                PaymentListScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
+            path: '/groups/:id/payments/new',
+            builder: (_, state) =>
+                PaymentFormScreen(groupId: state.pathParameters['id']!)),
+        GoRoute(
+            path: '/groups/:id/payments/:payId',
+            builder: (_, state) =>
+                PaymentApprovalScreen(id: state.pathParameters['payId']!)),
       ],
     );
 

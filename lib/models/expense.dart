@@ -3,6 +3,12 @@ class Expense {
   final String groupId;
   final String description;
   final double amount;
+  final double totalAmount;
+  final DateTime? expenseDate;
+  final bool hasTicket;
+  final String? ticketImageUrl;
+  final List<String> participants;
+  final String? status;
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -11,7 +17,13 @@ class Expense {
     required this.id,
     required this.groupId,
     required this.description,
-    required this.amount,
+    this.amount = 0,
+    this.totalAmount = 0,
+    this.expenseDate,
+    this.hasTicket = false,
+    this.ticketImageUrl,
+    this.participants = const [],
+    this.status,
     this.createdBy,
     this.createdAt,
     this.updatedAt,
@@ -19,25 +31,42 @@ class Expense {
 
   factory Expense.fromJson(Map<String, dynamic> json) => Expense(
         id: json['id'].toString(),
-        groupId: json['groupId'].toString(),
+        groupId: json['group_id'].toString(),
         description: json['description'] ?? '',
         amount: (json['amount'] as num?)?.toDouble() ?? 0,
-        createdBy: json['createdBy']?.toString(),
-        createdAt: json['createdAt'] != null
-            ? DateTime.parse(json['createdAt'])
+        totalAmount: (json['total_amount'] as num?)?.toDouble() ?? 0,
+        expenseDate: json['expense_date'] != null
+            ? DateTime.parse(json['expense_date'])
             : null,
-        updatedAt: json['updatedAt'] != null
-            ? DateTime.parse(json['updatedAt'])
+        hasTicket: json['has_ticket'] ?? false,
+        ticketImageUrl: json['ticket_image_url']?.toString(),
+        participants: (json['participants'] as List?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            [],
+        status: json['status']?.toString(),
+        createdBy: json['created_by']?.toString(),
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : null,
+        updatedAt: json['updated_at'] != null
+            ? DateTime.parse(json['updated_at'])
             : null,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'groupId': groupId,
+        'group_id': groupId,
         'description': description,
         'amount': amount,
-        'createdBy': createdBy,
-        'createdAt': createdAt?.toIso8601String(),
-        'updatedAt': updatedAt?.toIso8601String(),
+        'total_amount': totalAmount,
+        'expense_date': expenseDate?.toIso8601String(),
+        'has_ticket': hasTicket,
+        'ticket_image_url': ticketImageUrl,
+        'participants': participants,
+        'status': status,
+        'created_by': createdBy,
+        'created_at': createdAt?.toIso8601String(),
+        'updated_at': updatedAt?.toIso8601String(),
       };
 }
