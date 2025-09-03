@@ -29,7 +29,7 @@ class ExpenseListScreen extends HookConsumerWidget {
                     final expense = state.expenses[index];
                     return ListTile(
                       title: Text(expense.description),
-                      subtitle: Text('\\$${expense.amount.toStringAsFixed(2)}'),
+                      subtitle: Text('\$${expense.amount.toStringAsFixed(2)}'),
                       onTap: () =>
                           context.push('/groups/$groupId/expenses/${expense.id}'),
                     );

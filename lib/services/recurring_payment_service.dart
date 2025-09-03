@@ -9,7 +9,7 @@ class RecurringPaymentService {
 
   Future<List<RecurringPayment>> getRecurringPayments({String? groupId}) async {
     try {
-      final res = await _client.get('/recurring-payments', queryParameters: {
+      final res = await _client.get('/recurring-payments', query: {
         if (groupId != null) 'groupId': groupId,
       });
       final data = res.data as List;

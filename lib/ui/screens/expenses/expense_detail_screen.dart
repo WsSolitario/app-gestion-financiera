@@ -17,7 +17,7 @@ class ExpenseDetailScreen extends HookConsumerWidget {
       expense = state.expenses.firstWhere((e) => e.id == id);
     } catch (_) {}
 
-    final location = GoRouter.of(context).location;
+    final location = GoRouterState.of(context).uri.toString();
     final segments = Uri.parse(location).pathSegments;
     final groupId = segments.length >= 2 ? segments[1] : '';
 
@@ -42,7 +42,7 @@ class ExpenseDetailScreen extends HookConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Descripción: ${expense.description}'),
-                          Text('Monto: \\$${expense.amount.toStringAsFixed(2)}'),
+                          Text('Monto: \$${expense.amount.toStringAsFixed(2)}'),
                         ],
                       ),
                     ),
