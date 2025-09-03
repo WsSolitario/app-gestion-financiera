@@ -11,6 +11,9 @@ import 'ui/screens/groups/group_form_screen.dart';
 import 'ui/screens/expenses/expense_list_screen.dart';
 import 'ui/screens/expenses/expense_detail_screen.dart';
 import 'ui/screens/expenses/expense_form_screen.dart';
+import 'ui/screens/notifications_screen.dart';
+import 'ui/screens/recurring_payments/recurring_payments_screen.dart';
+import 'ui/screens/reports/reports_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +37,15 @@ class MyApp extends StatelessWidget {
             builder: (_, __) => const GroupListScreen()),
         GoRoute(path: AppRoutes.groupForm,
             builder: (_, __) => const GroupFormScreen()),
+        GoRoute(
+            path: AppRoutes.notifications,
+            builder: (_, __) => const NotificationsScreen()),
+        GoRoute(
+            path: AppRoutes.recurringPayments,
+            builder: (_, __) => const RecurringPaymentsScreen()),
+        GoRoute(
+            path: AppRoutes.reports,
+            builder: (_, __) => const ReportsScreen()),
         GoRoute(
             path: '/groups/:id',
             builder: (_, state) =>

@@ -1,5 +1,6 @@
 import "package:dio/dio.dart";
 
+import "../models/notification.dart";
 import "../services/api_client.dart";
 
 class NotificationService {
@@ -17,10 +18,11 @@ class NotificationService {
     }
   }
 
-  Future<List<dynamic>> getNotifications() async {
+  Future<List<AppNotification>> getNotifications() async {
     try {
       final res = await _client.get("/notifications");
-      return List<dynamic>.from(res.data);
+      final data = res.data as List;
+      return data.map((e) => AppNotification.fromJson(e)).toList();
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
