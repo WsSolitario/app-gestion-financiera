@@ -96,8 +96,6 @@ class MyApp extends StatelessWidget {
             builder: (_, state) =>
                 PaymentListScreen(groupId: state.pathParameters['id']!)),
         GoRoute(
-            path: '/invitations',
-            builder: (_, __) => const InvitationListScreen()),
             path: '/groups/:id/payments/new',
             builder: (_, state) =>
                 PaymentFormScreen(groupId: state.pathParameters['id']!)),
