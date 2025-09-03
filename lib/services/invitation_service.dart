@@ -15,21 +15,21 @@ class InvitationService {
     }
   }
 
-  Future<void> sendInvitation(String groupId, String email) async {
+  Future<void> sendInvitation(String groupId, String inviteeEmail) async {
     try {
       await _client.post("/invitations", data: {
-        "groupId": groupId,
-        "email": email,
+        "group_id": groupId,
+        "invitee_email": inviteeEmail,
       });
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
   }
 
-  Future<void> respondInvitation(String id, bool accept) async {
+  Future<void> acceptInvitation(String invitationId) async {
     try {
-      await _client.post("/invitations/$id/respond", data: {
-        "accept": accept,
+      await _client.post("/invitations/accept", data: {
+        "invitation_id": invitationId,
       });
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
