@@ -1,30 +1,28 @@
 import '../models/expense.dart';
+import '../services/expense_service.dart';
 
 class ExpenseRepository {
-  final List<Expense> _expenses = [];
+  final ExpenseService _service;
 
-  Future<List<Expense>> fetchExpenses(String groupId) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return _expenses.where((e) => e.groupId == groupId).toList();
+  ExpenseRepository(this._service);
+
+  Future<List<Expense>> getExpenses(String groupId) async {
+    return _service.getExpenses(groupId);
   }
 
-  Future<Expense> getExpense(String id) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return _expenses.firstWhere((e) => e.id == id);
-  }
-
-  Future<Expense> addExpense(
+  Future<Expense> createExpense(
       String groupId, String description, double amount) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    final expense = Expense(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      groupId: groupId,
-      description: description,
-      amount: amount,
-      createdAt: DateTime.now(),
-    );
-    _expenses.add(expense);
-    return expense;
+    return _service.createExpense(groupId, description, amount);
+  }
+
+  Future<Expense> updateExpense(String id,
+      {String? description, double? amount}) async {
+    return _service.updateExpense(id,
+        description: description, amount: amount);
+  }
+
+  Future<void> deleteExpense(String id) async {
+    await _service.deleteExpense(id);
   }
 }
 

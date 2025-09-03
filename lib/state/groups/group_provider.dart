@@ -17,7 +17,7 @@ class GroupNotifier extends StateNotifier<GroupState> {
   Future<void> fetchGroups() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final groups = await _repo.fetchGroups();
+      final groups = await _repo.getGroups();
       state = state.copyWith(groups: groups, isLoading: false);
     } on DioException catch (e) {
       state = state.copyWith(
@@ -27,11 +27,11 @@ class GroupNotifier extends StateNotifier<GroupState> {
     }
   }
 
-  Future<void> addGroup(String name, {String? description}) async {
+  Future<void> addGroup(String name) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await _repo.addGroup(name, description: description);
-      final groups = await _repo.fetchGroups();
+      await _repo.createGroup(name);
+      final groups = await _repo.getGroups();
       state = state.copyWith(groups: groups, isLoading: false);
     } on DioException catch (e) {
       state = state.copyWith(
