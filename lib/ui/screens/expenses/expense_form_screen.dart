@@ -12,6 +12,7 @@ class ExpenseFormScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final descController = useTextEditingController();
     final amountController = useTextEditingController();
+    final createdByController = useTextEditingController();
     final state = ref.watch(expenseNotifierProvider);
 
     return Scaffold(
@@ -30,6 +31,10 @@ class ExpenseFormScreen extends HookConsumerWidget {
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
             ),
+            TextField(
+              controller: createdByController,
+              decoration: const InputDecoration(labelText: 'Creado por'),
+            ),
             const SizedBox(height: 20),
             if (state.error != null) ...[
               Text(state.error!, style: const TextStyle(color: Colors.red)),
@@ -43,7 +48,8 @@ class ExpenseFormScreen extends HookConsumerWidget {
                           double.tryParse(amountController.text) ?? 0;
                       await ref
                           .read(expenseNotifierProvider.notifier)
-                          .addExpense(groupId, descController.text, amount);
+                          .addExpense(groupId, descController.text, amount,
+                              createdBy: createdByController.text);
                       final error = ref.read(expenseNotifierProvider).error;
                       if (context.mounted && error == null) {
                         context.pop();

@@ -21,10 +21,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> register(String email, String password, {String? name}) async {
+  Future<void> register(
+    String email,
+    String password, {
+    String? name,
+    String? registrationToken,
+    String? invitationToken,
+  }) async {
     state = const AuthLoading();
     try {
-      final user = await _repo.register(email, password, name: name);
+      final user = await _repo.register(
+        email,
+        password,
+        name: name,
+        registrationToken: registrationToken,
+        invitationToken: invitationToken,
+      );
       state = AuthRegistered(user.email);
     } catch (e) {
       state = AuthError(e.toString());

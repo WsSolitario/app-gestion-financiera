@@ -24,8 +24,20 @@ class AuthRepository {
     return prefs.getString("token");
   }
 
-  Future<User> register(String email, String password, {String? name}) async {
-    final user = await _service.register(email, password, name: name);
+  Future<User> register(
+    String email,
+    String password, {
+    String? name,
+    String? registrationToken,
+    String? invitationToken,
+  }) async {
+    final user = await _service.register(
+      email,
+      password,
+      name: name,
+      registrationToken: registrationToken,
+      invitationToken: invitationToken,
+    );
     // Guarda token si es necesario
     return user;
   }
