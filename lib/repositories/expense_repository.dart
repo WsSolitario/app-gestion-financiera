@@ -7,22 +7,38 @@ class ExpenseRepository {
   ExpenseRepository(this._service);
 
   /// Retrieve all expenses for the specified group.
-  Future<List<Expense>> getExpenses(String groupId) async {
-    return _service.getExpenses(groupId);
+  Future<List<Expense>> getExpenses(
+    String groupId, {
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    return _service.getExpenses(
+      groupId,
+      startDate: startDate,
+      endDate: endDate,
+    );
   }
 
   /// Create a new expense in the given group.
   Future<Expense> createExpense(
     String groupId,
     String description,
-    double amount, {
+    double totalAmount, {
+    DateTime? expenseDate,
+    bool hasTicket = false,
+    String? ticketImageUrl,
     String? createdBy,
+    List<String> participants = const [],
   }) async {
     return _service.createExpense(
       groupId,
       description,
-      amount,
+      totalAmount,
+      expenseDate: expenseDate,
+      hasTicket: hasTicket,
+      ticketImageUrl: ticketImageUrl,
       createdBy: createdBy,
+      participants: participants,
     );
   }
 
@@ -31,13 +47,21 @@ class ExpenseRepository {
     String id,
     String groupId, {
     String? description,
-    double? amount,
+    double? totalAmount,
+    DateTime? expenseDate,
+    bool? hasTicket,
+    String? ticketImageUrl,
+    List<String>? participants,
   }) async {
     return _service.updateExpense(
       id,
       groupId,
       description: description,
-      amount: amount,
+      totalAmount: totalAmount,
+      expenseDate: expenseDate,
+      hasTicket: hasTicket,
+      ticketImageUrl: ticketImageUrl,
+      participants: participants,
     );
   }
 

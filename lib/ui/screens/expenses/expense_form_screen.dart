@@ -48,8 +48,14 @@ class ExpenseFormScreen extends HookConsumerWidget {
                           double.tryParse(amountController.text) ?? 0;
                       await ref
                           .read(expenseNotifierProvider.notifier)
-                          .addExpense(groupId, descController.text, amount,
-                              createdBy: createdByController.text);
+                          .addExpense(
+                            groupId,
+                            descController.text,
+                            amount,
+                            expenseDate: DateTime.now(),
+                            createdBy: createdByController.text,
+                            participants: const [],
+                          );
                       final error = ref.read(expenseNotifierProvider).error;
                       if (context.mounted && error == null) {
                         context.pop();
