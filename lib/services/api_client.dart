@@ -9,6 +9,22 @@ class ApiClient {
 
   ApiClient(this._dio) {
     _dio.options.baseUrl = Env.apiBaseUrl;
+    _dio.options.connectTimeout = const Duration(seconds: 30);
+    _dio.options.receiveTimeout = const Duration(seconds: 30);
+    _dio.options.sendTimeout = const Duration(seconds: 30);
+    _dio.options.validateStatus = (status) => status! < 500;
+
+    // Agregar logging
+    _dio.interceptors.add(
+      LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+        error: true,
+        requestHeader: true,
+        responseHeader: true,
+      ),
+    );
+
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
@@ -32,14 +48,16 @@ class ApiClient {
   Future<Response<T>> get<T>(String path, {Map<String, dynamic>? query}) =>
       _dio.get(path, queryParameters: query);
 
-  Future<Response<T>> post<T>(String path, {dynamic data, Map<String, dynamic>? query}) =>
-      _dio.post(path, data: data, queryParameters: query);
+  Future<Response<T>> post<T>(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? query,
+  }) => _dio.post(path, data: data, queryParameters: query);
 
   Future<Response<T>> put<T>(String path, {dynamic data}) =>
       _dio.put(path, data: data);
 
-  Future<Response<T>> delete<T>(String path) =>
-      _dio.delete(path);
+  Future<Response<T>> delete<T>(String path) => _dio.delete(path);
 
   static String _mapError(DioException e) {
     if (e.type == DioExceptionType.connectionTimeout ||

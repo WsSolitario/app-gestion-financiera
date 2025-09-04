@@ -8,8 +8,8 @@ import 'payment_state.dart';
 
 final paymentNotifierProvider =
     StateNotifierProvider<PaymentNotifier, PaymentState>((ref) {
-  return PaymentNotifier(locator<PaymentRepository>());
-});
+      return PaymentNotifier(locator<PaymentRepository>());
+    });
 
 class PaymentNotifier extends StateNotifier<PaymentState> {
   final PaymentRepository _repo;
@@ -76,13 +76,12 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
     }
   }
 
-  Future<void> approvePayment(String id) async {
+  Future<void> approvePayment(String id, String groupId) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final updated = await _repo.approvePayment(id);
       state = state.copyWith(
-        payments:
-            state.payments.map((p) => p.id == id ? updated : p).toList(),
+        payments: state.payments.map((p) => p.id == id ? updated : p).toList(),
         isLoading: false,
       );
     } on DioException catch (e) {
@@ -95,13 +94,12 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
     }
   }
 
-  Future<void> rejectPayment(String id) async {
+  Future<void> rejectPayment(String id, String groupId) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final updated = await _repo.rejectPayment(id);
       state = state.copyWith(
-        payments:
-            state.payments.map((p) => p.id == id ? updated : p).toList(),
+        payments: state.payments.map((p) => p.id == id ? updated : p).toList(),
         isLoading: false,
       );
     } on DioException catch (e) {
