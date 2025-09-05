@@ -22,7 +22,6 @@ class NotificationService {
     try {
       final res = await _client.get(
         "/notifications",
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) => AppNotification.fromJson(e)).toList();

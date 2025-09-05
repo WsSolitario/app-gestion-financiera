@@ -8,7 +8,7 @@ class AppService {
 
   Future<String> getAppMode() async {
     try {
-      final res = await _client.get("/app-mode", queryParameters: {});
+      final res = await _client.get("/app-mode");
       return res.data["mode"] as String;
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);

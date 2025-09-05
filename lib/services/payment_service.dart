@@ -26,7 +26,6 @@ class PaymentService {
           if (startDate != null) 'start_date': startDate,
           if (endDate != null) 'end_date': endDate,
         },
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) => Payment.fromJson(e)).toList();
@@ -100,7 +99,6 @@ class PaymentService {
       final res = await _client.get(
         '/payments/due',
         query: {if (groupId != null) 'group_id': groupId},
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) => Payment.fromJson(e)).toList();

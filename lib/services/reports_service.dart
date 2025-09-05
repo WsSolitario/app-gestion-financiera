@@ -21,7 +21,6 @@ class ReportsService {
           if (startDate != null) 'startDate': startDate.toIso8601String(),
           if (endDate != null) 'endDate': endDate.toIso8601String(),
         },
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) => Report.fromJson(e)).toList();

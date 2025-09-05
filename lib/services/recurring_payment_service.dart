@@ -12,7 +12,6 @@ class RecurringPaymentService {
       final res = await _client.get(
         '/recurring-payments',
         query: {if (groupId != null) 'group_id': groupId},
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) => RecurringPayment.fromJson(e)).toList();

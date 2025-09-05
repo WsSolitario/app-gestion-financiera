@@ -16,7 +16,6 @@ class InvitationService {
           if (mine != null) "mine": mine.toString(),
           if (groupId != null) "group_id": groupId,
         },
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) => Invitation.fromJson(e)).toList();
