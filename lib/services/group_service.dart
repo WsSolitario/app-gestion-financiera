@@ -1,6 +1,7 @@
 import "package:dio/dio.dart";
 
 import "../models/group.dart";
+import "../models/user.dart";
 import "../services/api_client.dart";
 
 class GroupService {
@@ -84,6 +85,16 @@ class GroupService {
   Future<void> deleteMember(String groupId, String memberId) async {
     try {
       await _client.delete("/groups/$groupId/members/$memberId");
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  Future<List<User>> getMembers(String groupId) async {
+    try {
+      final res = await _client.get("/groups/$groupId/members");
+      final data = res.data as List;
+      return data.map((e) => User.fromJson(e)).toList();
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }

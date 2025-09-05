@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import '../../config/locator.dart';
 import '../../repositories/group_repository.dart';
 import '../../models/group.dart';
+import '../../models/user.dart';
+import '../../models/expense.dart';
 import 'group_state.dart';
 
 final groupNotifierProvider =
@@ -98,11 +100,47 @@ class GroupNotifier extends StateNotifier<GroupState> {
     }
   }
 
+  Future<List<User>> getMembers(String groupId) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final members = await _repo.getMembers(groupId);
+      final membersMap = Map<String, List<User>>.from(state.members);
+      membersMap[groupId] = members;
+      state = state.copyWith(members: membersMap, isLoading: false);
+      return members;
+    } on DioException catch (e) {
+      state = state.copyWith(
+          isLoading: false, error: e.response?.data['message'] ?? e.message);
+      return [];
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      return [];
+    }
+  }
+
+  Future<List<Expense>> getExpenses(String groupId) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final expenses = await _repo.getExpenses(groupId);
+      state = state.copyWith(isLoading: false);
+      return expenses;
+    } on DioException catch (e) {
+      state = state.copyWith(
+          isLoading: false, error: e.response?.data['message'] ?? e.message);
+      return [];
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      return [];
+    }
+  }
+
   Future<List<dynamic>> getBalances(String groupId) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final balances = await _repo.getBalances(groupId);
-      state = state.copyWith(isLoading: false);
+      final balancesMap = Map<String, List<dynamic>>.from(state.balances);
+      balancesMap[groupId] = balances;
+      state = state.copyWith(balances: balancesMap, isLoading: false);
       return balances;
     } on DioException catch (e) {
       state = state.copyWith(

@@ -42,10 +42,10 @@ Future<void> setupLocator() async {
 
   // Repositories
   locator.registerLazySingleton<AuthRepository>(() => AuthRepository(locator<AuthService>()));
-  locator.registerLazySingleton<GroupRepository>(
-      () => GroupRepository(locator<GroupService>()));
   locator.registerLazySingleton<ExpenseRepository>(
       () => ExpenseRepository(locator<ExpenseService>()));
+  locator.registerLazySingleton<GroupRepository>(
+      () => GroupRepository(locator<GroupService>(), locator<ExpenseRepository>()));
   locator.registerLazySingleton<InvitationRepository>(() => InvitationRepository(locator<InvitationService>()));
   locator.registerLazySingleton<PaymentRepository>(() => PaymentRepository(locator<PaymentService>()));
   locator.registerLazySingleton<NotificationRepository>(() => NotificationRepository(locator<NotificationService>()));

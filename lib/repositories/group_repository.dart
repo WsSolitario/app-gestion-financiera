@@ -1,10 +1,14 @@
 import '../models/group.dart';
+import '../models/user.dart';
+import '../models/expense.dart';
 import '../services/group_service.dart';
+import 'expense_repository.dart';
 
 class GroupRepository {
   final GroupService _service;
+  final ExpenseRepository _expenseRepo;
 
-  GroupRepository(this._service);
+  GroupRepository(this._service, this._expenseRepo);
 
   Future<List<Group>> getGroups() async {
     return _service.getGroups();
@@ -37,6 +41,14 @@ class GroupRepository {
 
   Future<void> deleteMember(String groupId, String memberId) async {
     await _service.deleteMember(groupId, memberId);
+  }
+
+  Future<List<User>> getMembers(String groupId) async {
+    return _service.getMembers(groupId);
+  }
+
+  Future<List<Expense>> getExpenses(String groupId) async {
+    return _expenseRepo.getExpenses(groupId);
   }
 
   Future<List<dynamic>> getBalances(String groupId) async {

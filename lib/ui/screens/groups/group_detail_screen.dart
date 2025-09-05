@@ -3,7 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../state/groups/group_provider.dart';
+import '../../../state/expenses/expense_provider.dart';
 import '../../../models/group.dart';
+import '../../widgets/circle_avatar_group.dart';
 
 class GroupDetailScreen extends HookConsumerWidget {
   final String id;
@@ -11,65 +13,97 @@ class GroupDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(groupNotifierProvider);
+    final groupState = ref.watch(groupNotifierProvider);
+    final expenseState = ref.watch(expenseNotifierProvider);
     Group? group;
     try {
-      group = state.groups.firstWhere((g) => g.id == id);
+      group = groupState.groups.firstWhere((g) => g.id == id);
     } catch (_) {}
 
     useEffect(() {
-      if (state.groups.isEmpty) {
-        ref.read(groupNotifierProvider.notifier).fetchGroups();
-      }
+      Future(() async {
+        if (groupState.groups.isEmpty) {
+          await ref.read(groupNotifierProvider.notifier).fetchGroups();
+        }
+        await ref.read(groupNotifierProvider.notifier).getMembers(id);
+        await ref.read(groupNotifierProvider.notifier).getBalances(id);
+        await ref.read(expenseNotifierProvider.notifier).fetchExpenses(id);
+      });
       return null;
-    }, const []);
+    }, [id]);
+
+    final members = groupState.members[id] ?? [];
+    final balances = groupState.balances[id] ?? [];
 
     return Scaffold(
       appBar: AppBar(title: Text(group?.name ?? 'Grupo')),
-      body: state.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : state.error != null
-          ? Center(child: Text(state.error!))
+      body: groupState.error != null
+          ? Center(child: Text(groupState.error!))
           : group == null
-          ? const Center(child: Text('Grupo no encontrado'))
-          : Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('ID: ${group.id}'),
-                  Text('Nombre: ${group.name}'),
-                  if (group.description != null)
-                    Text('Descripción: ${group.description}'),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.push('/groups/${group!.id}/expenses'),
-                    child: const Text('Ver gastos'),
-                  ),
-                  const SizedBox(height: 8),
-
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.push('/groups/${group!.id}/members'),
-                    child: const Text('Gestionar miembros'),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.push('/groups/${group!.id}/balances'),
-                    child: const Text('Ver balances'),
-                  ),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.push('/groups/${group!.id}/payments'),
-                    child: const Text('Ver pagos'),
-                  ),
-                ],
+              ? const Center(child: Text('Grupo no encontrado'))
+              : ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: [
+                    const Text('Gastos recientes',
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    if (expenseState.isLoading)
+                      const Center(child: CircularProgressIndicator())
+                    else
+                      ...expenseState.expenses
+                          .take(3)
+                          .map((e) => ListTile(
+                                title: Text(e.description),
+                                trailing: Text('\$${e.totalAmount.toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                              )),
+                    const SizedBox(height: 24),
+                    const Text('Miembros del grupo',
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    if (groupState.isLoading && members.isEmpty)
+                      const Center(child: CircularProgressIndicator())
+                    else
+                      CircleAvatarGroup(
+                          users: members,
+                          extraCount:
+                              members.length > 3 ? members.length - 3 : 0),
+                    const SizedBox(height: 24),
+                    const Text('Resumen de balances',
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    if (groupState.isLoading && balances.isEmpty)
+                      const Center(child: CircularProgressIndicator())
+                    else
+                      ...balances.take(3).map((b) => ListTile(
+                            title: Text(b.toString()),
+                          )),
+                  ],
+                ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => context.push('/groups/$id/expenses'),
+                child: const Text('Añadir gasto'),
               ),
             ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => context.push('/groups/$id/balances'),
+                child: const Text('Ver detalles'),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
