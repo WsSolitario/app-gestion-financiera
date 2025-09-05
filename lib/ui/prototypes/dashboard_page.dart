@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/app_bottom_navigation.dart';
+
 const softSage = Color(0xFFE8EAE6);
 const lightLavender = Color(0xFFE6E6FA);
 const textSecondary = Color(0xFF6B7280);
@@ -37,18 +39,7 @@ class DashboardPage extends StatelessWidget {
           _activityTile('Alquiler', 'Sophia pagó su parte.', '4h'),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.groups), label: 'Grupos'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.payments), label: 'Pagos'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-        ],
-      ),
+      bottomNavigationBar: const AppBottomNavigation(currentIndex: 1),
     );
   }
 
