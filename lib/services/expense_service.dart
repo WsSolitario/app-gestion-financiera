@@ -22,7 +22,6 @@ class ExpenseService {
       final res = await _client.get(
         "/expenses",
         query: params,
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) => Expense.fromJson(e)).toList();
@@ -35,7 +34,6 @@ class ExpenseService {
     try {
       final res = await _client.get(
         "/expenses/$id",
-        queryParameters: <String, dynamic>{},
       );
       return Expense.fromJson(res.data);
     } on DioException catch (e) {

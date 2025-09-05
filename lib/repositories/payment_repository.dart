@@ -27,7 +27,7 @@ class PaymentService {
       'startDate': startDate,
       'endDate': endDate,
     });
-    final res = await _api.get('/api/payments', queryParameters: query);
+    final res = await _api.get('/api/payments', query: query);
     final list = (res.data as List);
     return list.map((j) => Payment.fromJson(j)).toList();
   }
@@ -86,7 +86,7 @@ class PaymentService {
   // GET /api/payments/due  (query usa group_id en snake_case)
   Future<List<Payment>> getDuePayments({String? groupId}) async {
     final query = _clean({'group_id': groupId}); // ← excepción
-    final res = await _api.get('/api/payments/due', queryParameters: query);
+    final res = await _api.get('/api/payments/due', query: query);
     final list = (res.data as List);
     return list.map((j) => Payment.fromJson(j)).toList();
   }

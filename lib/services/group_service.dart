@@ -11,7 +11,6 @@ class GroupService {
     try {
       final res = await _client.get(
         "/groups",
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) {
@@ -34,7 +33,6 @@ class GroupService {
     try {
       final res = await _client.get(
         "/groups/$id",
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data;
       if (data is Map<String, dynamic>) {
@@ -132,7 +130,6 @@ class GroupService {
     try {
       final res = await _client.get(
         "/groups/$groupId/balances",
-        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data;
