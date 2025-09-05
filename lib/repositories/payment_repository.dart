@@ -14,11 +14,11 @@ class PaymentRepository {
     String? endDate,
   }) =>
       _service.getPayments(
-        groupId: groupId,
+        group_id: groupId,
         status: status,
         direction: direction,
-        startDate: startDate,
-        endDate: endDate,
+        start_date: startDate,
+        end_date: endDate,
       );
 
   Future<Payment> createPayment({
@@ -31,13 +31,13 @@ class PaymentRepository {
     String? paymentMethod,
   }) =>
       _service.createPayment(
-        groupId: groupId,
-        fromUserId: fromUserId,
-        toUserId: toUserId,
+        group_id: groupId,
+        from_user_id: fromUserId,
+        to_user_id: toUserId,
         amount: amount,
         note: note,
-        evidenceUrl: evidenceUrl,
-        paymentMethod: paymentMethod,
+        evidence_url: evidenceUrl,
+        payment_method: paymentMethod,
       );
 
   Future<Payment> approvePayment(String id) => _service.approvePayment(id);
@@ -45,7 +45,7 @@ class PaymentRepository {
   Future<Payment> rejectPayment(String id) => _service.rejectPayment(id);
 
   Future<List<Payment>> getDuePayments({String? groupId}) =>
-      _service.getDuePayments(groupId: groupId);
+      _service.getDuePayments(group_id: groupId);
 
   Future<void> deletePayment(String id) => _service.deletePayment(id);
 }
