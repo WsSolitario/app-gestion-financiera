@@ -16,6 +16,7 @@ class InvitationService {
           if (mine != null) "mine": mine.toString(),
           if (groupId != null) "group_id": groupId,
         },
+        queryParameters: <String, dynamic>{},
       );
       final data = res.data as List;
       return data.map((e) => Invitation.fromJson(e)).toList();
@@ -33,11 +34,14 @@ class InvitationService {
     int? expiresInDays,
   }) async {
     try {
-      final res = await _client.post("/invitations", data: {
-        "invitee_email": inviteeEmail,
-        "group_id": groupId,
-        if (expiresInDays != null) "expires_in_days": expiresInDays,
-      });
+      final res = await _client.post(
+        "/invitations",
+        data: {
+          "invitee_email": inviteeEmail,
+          "group_id": groupId,
+          if (expiresInDays != null) "expires_in_days": expiresInDays,
+        },
+      );
       return Invitation.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
@@ -48,9 +52,7 @@ class InvitationService {
   /// Body: { "token": "INVITE-TOKEN" }
   Future<void> acceptInvitation(String token) async {
     try {
-      await _client.post("/invitations/accept", data: {
-        "token": token,
-      });
+      await _client.post("/invitations/accept", data: {"token": token});
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }

@@ -9,9 +9,11 @@ class RecurringPaymentService {
 
   Future<List<RecurringPayment>> getRecurringPayments({String? groupId}) async {
     try {
-      final res = await _client.get('/recurring-payments', query: {
-        if (groupId != null) 'group_id': groupId,
-      });
+      final res = await _client.get(
+        '/recurring-payments',
+        query: {if (groupId != null) 'group_id': groupId},
+        queryParameters: <String, dynamic>{},
+      );
       final data = res.data as List;
       return data.map((e) => RecurringPayment.fromJson(e)).toList();
     } on DioException catch (e) {
@@ -27,13 +29,16 @@ class RecurringPaymentService {
     DateTime? nextDate,
   }) async {
     try {
-      final res = await _client.post('/recurring-payments', data: {
-        'group_id': groupId,
-        'description': description,
-        'amount': amount,
-        'frequency': frequency,
-        if (nextDate != null) 'next_date': nextDate.toIso8601String(),
-      });
+      final res = await _client.post(
+        '/recurring-payments',
+        data: {
+          'group_id': groupId,
+          'description': description,
+          'amount': amount,
+          'frequency': frequency,
+          if (nextDate != null) 'next_date': nextDate.toIso8601String(),
+        },
+      );
       return RecurringPayment.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? e.message);
@@ -48,12 +53,15 @@ class RecurringPaymentService {
     DateTime? nextDate,
   }) async {
     try {
-      final res = await _client.put('/recurring-payments/$id', data: {
-        if (description != null) 'description': description,
-        if (amount != null) 'amount': amount,
-        if (frequency != null) 'frequency': frequency,
-        if (nextDate != null) 'next_date': nextDate.toIso8601String(),
-      });
+      final res = await _client.put(
+        '/recurring-payments/$id',
+        data: {
+          if (description != null) 'description': description,
+          if (amount != null) 'amount': amount,
+          if (frequency != null) 'frequency': frequency,
+          if (nextDate != null) 'next_date': nextDate.toIso8601String(),
+        },
+      );
       return RecurringPayment.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? e.message);

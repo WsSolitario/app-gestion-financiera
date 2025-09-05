@@ -8,15 +8,22 @@ class ExpenseService {
   final ApiClient _client;
   ExpenseService(this._client);
 
-  Future<List<Expense>> getExpenses(String groupId,
-      {DateTime? startDate, DateTime? endDate}) async {
+  Future<List<Expense>> getExpenses(
+    String groupId, {
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     try {
       final params = {
         "groupId": groupId,
         if (startDate != null) "startDate": startDate.toIso8601String(),
         if (endDate != null) "endDate": endDate.toIso8601String(),
       };
-      final res = await _client.get("/expenses", query: params);
+      final res = await _client.get(
+        "/expenses",
+        query: params,
+        queryParameters: <String, dynamic>{},
+      );
       final data = res.data as List;
       return data.map((e) => Expense.fromJson(e)).toList();
     } on DioException catch (e) {
@@ -26,7 +33,10 @@ class ExpenseService {
 
   Future<Expense> getExpense(String id) async {
     try {
-      final res = await _client.get("/expenses/$id");
+      final res = await _client.get(
+        "/expenses/$id",
+        queryParameters: <String, dynamic>{},
+      );
       return Expense.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
@@ -44,17 +54,19 @@ class ExpenseService {
     List<ExpenseParticipant> participants = const [],
   }) async {
     try {
-      final res = await _client.post("/expenses", data: {
-        "group_id": groupId,
-        "description": description,
-        "total_amount": totalAmount,
-        "expense_date": expenseDate?.toIso8601String(),
-        "has_ticket": hasTicket,
-        "ticket_image_url": ticketImageUrl,
-        "participants":
-            participants.map((p) => p.toJson()).toList(),
-        if (createdBy != null) "created_by": createdBy,
-      });
+      final res = await _client.post(
+        "/expenses",
+        data: {
+          "group_id": groupId,
+          "description": description,
+          "total_amount": totalAmount,
+          "expense_date": expenseDate?.toIso8601String(),
+          "has_ticket": hasTicket,
+          "ticket_image_url": ticketImageUrl,
+          "participants": participants.map((p) => p.toJson()).toList(),
+          if (createdBy != null) "created_by": createdBy,
+        },
+      );
       return Expense.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);

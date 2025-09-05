@@ -81,7 +81,13 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
     try {
       final updated = await _repo.approvePayment(id);
       state = state.copyWith(
-        payments: state.payments.map((p) => p.id == id ? updated : p).toList(),
+        payments: state.payments.map<Payment>((p) {
+          if (p.id == id) {
+            return updated;
+          } else {
+            return p;
+          }
+        }).toList(),
         isLoading: false,
       );
     } on DioException catch (e) {
@@ -99,7 +105,9 @@ class PaymentNotifier extends StateNotifier<PaymentState> {
     try {
       final updated = await _repo.rejectPayment(id);
       state = state.copyWith(
-        payments: state.payments.map((p) => p.id == id ? updated : p).toList(),
+        payments: state.payments
+            .map<Payment>((p) => p.id == id ? updated : p)
+            .toList(),
         isLoading: false,
       );
     } on DioException catch (e) {

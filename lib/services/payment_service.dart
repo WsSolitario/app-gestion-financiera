@@ -17,13 +17,17 @@ class PaymentService {
     String? endDate, // YYYY-MM-DD
   }) async {
     try {
-      final res = await _client.get('/payments', query: {
-        if (groupId != null) 'group_id': groupId,
-        if (status != null) 'status': status,
-        if (direction != null) 'direction': direction,
-        if (startDate != null) 'start_date': startDate,
-        if (endDate != null) 'end_date': endDate,
-      });
+      final res = await _client.get(
+        '/payments',
+        query: {
+          if (groupId != null) 'group_id': groupId,
+          if (status != null) 'status': status,
+          if (direction != null) 'direction': direction,
+          if (startDate != null) 'start_date': startDate,
+          if (endDate != null) 'end_date': endDate,
+        },
+        queryParameters: <String, dynamic>{},
+      );
       final data = res.data as List;
       return data.map((e) => Payment.fromJson(e)).toList();
     } on DioException catch (e) {
@@ -43,15 +47,18 @@ class PaymentService {
     String? paymentMethod, // "cash" | "transfer" | ...
   }) async {
     try {
-      final res = await _client.post('/payments', data: {
-        'group_id': groupId,
-        'from_user_id': fromUserId,
-        'to_user_id': toUserId,
-        'amount': amount,
-        if (note != null) 'note': note,
-        if (evidenceUrl != null) 'evidence_url': evidenceUrl,
-        if (paymentMethod != null) 'payment_method': paymentMethod,
-      });
+      final res = await _client.post(
+        '/payments',
+        data: {
+          'group_id': groupId,
+          'from_user_id': fromUserId,
+          'to_user_id': toUserId,
+          'amount': amount,
+          if (note != null) 'note': note,
+          if (evidenceUrl != null) 'evidence_url': evidenceUrl,
+          if (paymentMethod != null) 'payment_method': paymentMethod,
+        },
+      );
       return Payment.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? e.message);
@@ -90,9 +97,11 @@ class PaymentService {
   /// GET /payments/due[?group_id]
   Future<List<Payment>> getDuePayments({String? groupId}) async {
     try {
-      final res = await _client.get('/payments/due', query: {
-        if (groupId != null) 'group_id': groupId,
-      });
+      final res = await _client.get(
+        '/payments/due',
+        query: {if (groupId != null) 'group_id': groupId},
+        queryParameters: <String, dynamic>{},
+      );
       final data = res.data as List;
       return data.map((e) => Payment.fromJson(e)).toList();
     } on DioException catch (e) {

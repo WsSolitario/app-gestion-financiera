@@ -9,7 +9,10 @@ class GroupService {
 
   Future<List<Group>> getGroups() async {
     try {
-      final res = await _client.get("/groups");
+      final res = await _client.get(
+        "/groups",
+        queryParameters: <String, dynamic>{},
+      );
       final data = res.data as List;
       return data.map((e) {
         if (e is Map<String, dynamic>) {
@@ -29,7 +32,10 @@ class GroupService {
 
   Future<Group> getGroup(String id) async {
     try {
-      final res = await _client.get("/groups/$id");
+      final res = await _client.get(
+        "/groups/$id",
+        queryParameters: <String, dynamic>{},
+      );
       final data = res.data;
       if (data is Map<String, dynamic>) {
         if (data['member_count'] == null && data['members'] is List) {
@@ -48,23 +54,32 @@ class GroupService {
 
   Future<Group> createGroup(String name, {String? description}) async {
     try {
-      final res = await _client.post("/groups", data: {
-        "name": name,
-        if (description != null) "description": description,
-      });
+      final res = await _client.post(
+        "/groups",
+        data: {
+          "name": name,
+          if (description != null) "description": description,
+        },
+      );
       return Group.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
   }
 
-  Future<Group> updateGroup(String id,
-      {required String name, String? description}) async {
+  Future<Group> updateGroup(
+    String id, {
+    required String name,
+    String? description,
+  }) async {
     try {
-      final res = await _client.put("/groups/$id", data: {
-        "name": name,
-        if (description != null) "description": description,
-      });
+      final res = await _client.put(
+        "/groups/$id",
+        data: {
+          "name": name,
+          if (description != null) "description": description,
+        },
+      );
       return Group.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
@@ -81,21 +96,25 @@ class GroupService {
 
   Future<void> addMember(String groupId, String userId, {String? role}) async {
     try {
-      await _client.post("/groups/$groupId/members", data: {
-        "user_id": userId,
-        if (role != null) "role": role,
-      });
+      await _client.post(
+        "/groups/$groupId/members",
+        data: {"user_id": userId, if (role != null) "role": role},
+      );
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
   }
 
   Future<void> updateMemberRole(
-      String groupId, String memberId, String role) async {
+    String groupId,
+    String memberId,
+    String role,
+  ) async {
     try {
-      await _client.put("/groups/$groupId/members/$memberId", data: {
-        "role": role,
-      });
+      await _client.put(
+        "/groups/$groupId/members/$memberId",
+        data: {"role": role},
+      );
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
@@ -111,7 +130,10 @@ class GroupService {
 
   Future<List<dynamic>> getBalances(String groupId) async {
     try {
-      final res = await _client.get("/groups/$groupId/balances");
+      final res = await _client.get(
+        "/groups/$groupId/balances",
+        queryParameters: <String, dynamic>{},
+      );
       final data = res.data as List;
       return data;
     } on DioException catch (e) {
