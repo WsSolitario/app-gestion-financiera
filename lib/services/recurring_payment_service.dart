@@ -9,8 +9,8 @@ class RecurringPaymentService {
 
   Future<List<RecurringPayment>> getRecurringPayments({String? groupId}) async {
     try {
-      final res = await _client.get('/recurring-payments', query: {
-        if (groupId != null) 'groupId': groupId,
+      final res = await _client.get('/recurring_payments', query: {
+        if (groupId != null) 'group_id': groupId,
       });
       final data = res.data as List;
       return data.map((e) => RecurringPayment.fromJson(e)).toList();
@@ -24,13 +24,15 @@ class RecurringPaymentService {
     required String description,
     required double amount,
     required String frequency,
+    DateTime? nextDate,
   }) async {
     try {
-      final res = await _client.post('/recurring-payments', data: {
-        'groupId': groupId,
+      final res = await _client.post('/recurring_payments', data: {
+        'group_id': groupId,
         'description': description,
         'amount': amount,
         'frequency': frequency,
+        if (nextDate != null) 'next_date': nextDate.toIso8601String(),
       });
       return RecurringPayment.fromJson(res.data);
     } on DioException catch (e) {
@@ -38,17 +40,19 @@ class RecurringPaymentService {
     }
   }
 
-  Future<RecurringPayment> updateRecurringPayment(String id,
-      {String? description,
-      double? amount,
-      String? frequency,
-      DateTime? nextDate}) async {
+  Future<RecurringPayment> updateRecurringPayment(
+    String id, {
+    String? description,
+    double? amount,
+    String? frequency,
+    DateTime? nextDate,
+  }) async {
     try {
-      final res = await _client.put('/recurring-payments/$id', data: {
+      final res = await _client.put('/recurring_payments/$id', data: {
         if (description != null) 'description': description,
         if (amount != null) 'amount': amount,
         if (frequency != null) 'frequency': frequency,
-        if (nextDate != null) 'nextDate': nextDate.toIso8601String(),
+        if (nextDate != null) 'next_date': nextDate.toIso8601String(),
       });
       return RecurringPayment.fromJson(res.data);
     } on DioException catch (e) {
@@ -58,7 +62,7 @@ class RecurringPaymentService {
 
   Future<void> deleteRecurringPayment(String id) async {
     try {
-      await _client.delete('/recurring-payments/$id');
+      await _client.delete('/recurring_payments/$id');
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? e.message);
     }

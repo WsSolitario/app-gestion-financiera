@@ -13,12 +13,14 @@ class RecurringPaymentRepository {
     required String description,
     required double amount,
     required String frequency,
+    DateTime? nextDate,
   }) =>
       _service.createRecurringPayment(
         groupId: groupId,
         description: description,
         amount: amount,
         frequency: frequency,
+        nextDate: nextDate,
       );
 
   Future<RecurringPayment> updateRecurringPayment(String id,
