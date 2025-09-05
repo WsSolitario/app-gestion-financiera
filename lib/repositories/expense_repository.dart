@@ -1,4 +1,5 @@
 import '../models/expense.dart';
+import '../models/expense_participant.dart';
 import '../services/expense_service.dart';
 
 class ExpenseRepository {
@@ -28,7 +29,7 @@ class ExpenseRepository {
     bool hasTicket = false,
     String? ticketImageUrl,
     String? createdBy,
-    List<String> participants = const [],
+    List<ExpenseParticipant> participants = const [],
   }) async {
     return _service.createExpense(
       groupId,
@@ -51,7 +52,7 @@ class ExpenseRepository {
     DateTime? expenseDate,
     bool? hasTicket,
     String? ticketImageUrl,
-    List<String>? participants,
+    List<ExpenseParticipant>? participants,
   }) async {
     return _service.updateExpense(
       id,
