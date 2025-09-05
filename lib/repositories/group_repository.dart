@@ -7,11 +7,35 @@ class GroupRepository {
   GroupRepository(this._service);
 
   Future<List<Group>> getGroups() async {
-    return _service.getGroups();
+    final groups = await _service.getGroups();
+    return groups
+        .map((g) => Group(
+              id: g.id,
+              name: g.name,
+              description: g.description,
+              createdBy: g.createdBy,
+              createdAt: g.createdAt,
+              updatedAt: g.updatedAt,
+              memberCount: g.memberCount,
+              expenseCount: g.expenseCount,
+              imageUrl: g.imageUrl,
+            ))
+        .toList();
   }
 
   Future<Group> getGroup(String id) async {
-    return _service.getGroup(id);
+    final g = await _service.getGroup(id);
+    return Group(
+      id: g.id,
+      name: g.name,
+      description: g.description,
+      createdBy: g.createdBy,
+      createdAt: g.createdAt,
+      updatedAt: g.updatedAt,
+      memberCount: g.memberCount,
+      expenseCount: g.expenseCount,
+      imageUrl: g.imageUrl,
+    );
   }
 
   Future<Group> createGroup(String name, {String? description}) async {

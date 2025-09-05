@@ -8,7 +8,7 @@ import 'ui/screens/dashboard_screen.dart';
 import 'ui/screens/register_screen.dart';
 import 'ui/screens/profile_screen.dart';
 import 'ui/screens/groups/group_list_screen.dart';
-import 'ui/screens/groups/group_detail_screen.dart';
+import 'ui/screens/groups/group_detail_view.dart';
 import 'ui/screens/groups/group_form_screen.dart';
 import 'ui/screens/groups/group_members_screen.dart';
 import 'ui/screens/groups/group_balances_screen.dart';
@@ -17,6 +17,7 @@ import 'ui/screens/expenses/expense_detail_screen.dart';
 import 'ui/screens/expenses/expense_form_screen.dart';
 import 'ui/screens/notifications_screen.dart';
 import 'ui/screens/recurring_payments/recurring_payments_screen.dart';
+import 'ui/screens/recurring_payments/recurring_payment_form_screen.dart';
 import 'ui/screens/reports/reports_screen.dart';
 import 'ui/screens/payments/payment_list_screen.dart';
 import 'ui/screens/invitations/invitation_list_screen.dart';
@@ -24,6 +25,7 @@ import 'ui/screens/invitations/invitation_accept_screen.dart';
 import 'ui/screens/payments/payment_form_screen.dart';
 import 'ui/screens/payments/payment_approval_screen.dart';
 import 'state/app_mode/app_mode_provider.dart';
+import 'models/recurring_payment.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,12 +75,15 @@ class MyApp extends ConsumerWidget {
             path: AppRoutes.recurringPayments,
             builder: (_, __) => const RecurringPaymentsScreen()),
         GoRoute(
+            path: AppRoutes.recurringPaymentForm,
+            builder: (_, state) => RecurringPaymentFormScreen(
+                payment: state.extra as RecurringPayment?)),
+        GoRoute(
             path: AppRoutes.reports,
             builder: (_, __) => const ReportsScreen()),
         GoRoute(
-            path: '/groups/:id',
-            builder: (_, state) =>
-                GroupDetailScreen(id: state.pathParameters['id']!)),
+            path: AppRoutes.groupDetail,
+            builder: (_, __) => const GroupDetailView()),
         GoRoute(
             path: '/groups/:id/members',
             builder: (_, state) =>
