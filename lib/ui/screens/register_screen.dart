@@ -4,7 +4,7 @@ import "package:go_router/go_router.dart";
 
 import "../../state/auth/auth_provider.dart";
 import "../../state/auth/auth_state.dart";
-import "../../state/app_mode_provider.dart";
+import "../../state/app_mode/app_mode_provider.dart";
 import "../routes.dart";
 
 class RegisterScreen extends ConsumerStatefulWidget {
