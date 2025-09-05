@@ -11,7 +11,17 @@ class GroupService {
     try {
       final res = await _client.get("/groups");
       final data = res.data as List;
-      return data.map((e) => Group.fromJson(e)).toList();
+      return data.map((e) {
+        if (e is Map<String, dynamic>) {
+          if (e['member_count'] == null && e['members'] is List) {
+            e['member_count'] = (e['members'] as List).length;
+          }
+          if (e['expense_count'] == null && e['expenses'] is List) {
+            e['expense_count'] = (e['expenses'] as List).length;
+          }
+        }
+        return Group.fromJson(e);
+      }).toList();
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
@@ -20,6 +30,16 @@ class GroupService {
   Future<Group> getGroup(String id) async {
     try {
       final res = await _client.get("/groups/$id");
+      final data = res.data;
+      if (data is Map<String, dynamic>) {
+        if (data['member_count'] == null && data['members'] is List) {
+          data['member_count'] = (data['members'] as List).length;
+        }
+        if (data['expense_count'] == null && data['expenses'] is List) {
+          data['expense_count'] = (data['expenses'] as List).length;
+        }
+        return Group.fromJson(data);
+      }
       return Group.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);

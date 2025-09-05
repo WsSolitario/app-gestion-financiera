@@ -8,7 +8,7 @@ import 'ui/screens/dashboard_screen.dart';
 import 'ui/screens/register_screen.dart';
 import 'ui/screens/profile_screen.dart';
 import 'ui/screens/groups/group_list_screen.dart';
-import 'ui/screens/groups/group_detail_screen.dart';
+import 'ui/screens/groups/group_detail_view.dart';
 import 'ui/screens/groups/group_form_screen.dart';
 import 'ui/screens/groups/group_members_screen.dart';
 import 'ui/screens/groups/group_balances_screen.dart';
@@ -76,9 +76,8 @@ class MyApp extends ConsumerWidget {
             path: AppRoutes.reports,
             builder: (_, __) => const ReportsScreen()),
         GoRoute(
-            path: '/groups/:id',
-            builder: (_, state) =>
-                GroupDetailScreen(id: state.pathParameters['id']!)),
+            path: AppRoutes.groupDetail,
+            builder: (_, __) => const GroupDetailView()),
         GoRoute(
             path: '/groups/:id/members',
             builder: (_, state) =>
