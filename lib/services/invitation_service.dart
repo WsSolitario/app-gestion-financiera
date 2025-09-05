@@ -7,14 +7,14 @@ class InvitationService {
   final ApiClient _client;
   InvitationService(this._client);
 
-  /// GET /api/invitations[?mine=true][&groupId=UUID]
+  /// GET /api/invitations[?mine=true][&group_id=UUID]
   Future<List<Invitation>> getInvitations({bool? mine, String? groupId}) async {
     try {
       final res = await _client.get(
         "/invitations",
         query: {
           if (mine != null) "mine": mine.toString(),
-          if (groupId != null) "groupId": groupId,
+          if (groupId != null) "group_id": groupId,
         },
       );
       final data = res.data as List;

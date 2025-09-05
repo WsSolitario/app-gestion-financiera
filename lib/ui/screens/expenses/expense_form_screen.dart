@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../state/expenses/expense_provider.dart';
+import '../../../models/expense_participant.dart';
 
 class ExpenseFormScreen extends HookConsumerWidget {
   final String groupId;
@@ -54,7 +55,7 @@ class ExpenseFormScreen extends HookConsumerWidget {
                             amount,
                             expenseDate: DateTime.now(),
                             createdBy: createdByController.text,
-                            participants: const [],
+                            participants: const <ExpenseParticipant>[],
                           );
                       final error = ref.read(expenseNotifierProvider).error;
                       if (context.mounted && error == null) {

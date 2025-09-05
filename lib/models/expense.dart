@@ -1,3 +1,5 @@
+import 'expense_participant.dart';
+
 class Expense {
   final String id;
   final String groupId;
@@ -7,7 +9,7 @@ class Expense {
   final DateTime? expenseDate;
   final bool hasTicket;
   final String? ticketImageUrl;
-  final List<String> participants;
+  final List<ExpenseParticipant> participants;
   final String? status;
   final String? createdBy;
   final DateTime? createdAt;
@@ -41,7 +43,7 @@ class Expense {
         hasTicket: json['has_ticket'] ?? false,
         ticketImageUrl: json['ticket_image_url']?.toString(),
         participants: (json['participants'] as List?)
-                ?.map((e) => e.toString())
+                ?.map((e) => ExpenseParticipant.fromJson(e))
                 .toList() ??
             [],
         status: json['status']?.toString(),
@@ -63,7 +65,7 @@ class Expense {
         'expense_date': expenseDate?.toIso8601String(),
         'has_ticket': hasTicket,
         'ticket_image_url': ticketImageUrl,
-        'participants': participants,
+        'participants': participants.map((e) => e.toJson()).toList(),
         'status': status,
         'created_by': createdBy,
         'created_at': createdAt?.toIso8601String(),
