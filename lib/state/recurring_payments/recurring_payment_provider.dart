@@ -30,4 +30,64 @@ class RecurringPaymentNotifier
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
+
+  Future<void> createRecurringPayment({
+    required String groupId,
+    required String description,
+    required double amount,
+    required String frequency,
+    DateTime? nextDate,
+  }) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      await _repo.createRecurringPayment(
+        groupId: groupId,
+        description: description,
+        amount: amount,
+        frequency: frequency,
+        nextDate: nextDate,
+      );
+      final payments = await _repo.getRecurringPayments(groupId: groupId);
+      state = state.copyWith(payments: payments, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> updateRecurringPayment(
+    String id, {
+    String? description,
+    double? amount,
+    String? frequency,
+    DateTime? nextDate,
+  }) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final updated = await _repo.updateRecurringPayment(
+        id,
+        description: description,
+        amount: amount,
+        frequency: frequency,
+        nextDate: nextDate,
+      );
+      state = state.copyWith(
+        payments: state.payments
+            .map((p) => p.id == id ? updated : p)
+            .toList(),
+        isLoading: false,
+      );
+    } on DioException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
 }

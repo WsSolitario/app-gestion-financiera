@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../routes.dart';
 import '../../../state/recurring_payments/recurring_payment_provider.dart';
 
 class RecurringPaymentsScreen extends HookConsumerWidget {
@@ -35,6 +37,18 @@ class RecurringPaymentsScreen extends HookConsumerWidget {
                     );
                   },
                 ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ElevatedButton.icon(
+          onPressed: () => context.push(AppRoutes.recurringPaymentForm),
+          icon: const Icon(Icons.add),
+          label: const Text('Agregar Gasto Recurrente'),
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
+            shape: const StadiumBorder(),
+          ),
+        ),
+      ),
     );
   }
 }

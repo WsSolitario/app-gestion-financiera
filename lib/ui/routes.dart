@@ -11,6 +11,7 @@ class AppRoutes {
   static const expenseDetail = '/groups/:id/expenses/:expId';
   static const notifications = '/notifications';
   static const recurringPayments = '/recurring-payments';
+  static const recurringPaymentForm = '/recurring-payments/new';
   static const reports = '/reports';
   static const invitations = '/invitations';
   static const invitationAccept = '/invitations/accept';
