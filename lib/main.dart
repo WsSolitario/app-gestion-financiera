@@ -17,6 +17,7 @@ import 'ui/screens/expenses/expense_detail_screen.dart';
 import 'ui/screens/expenses/expense_form_screen.dart';
 import 'ui/screens/notifications_screen.dart';
 import 'ui/screens/recurring_payments/recurring_payments_screen.dart';
+import 'ui/screens/recurring_payments/recurring_payment_form_screen.dart';
 import 'ui/screens/reports/reports_screen.dart';
 import 'ui/screens/payments/payment_list_screen.dart';
 import 'ui/screens/invitations/invitation_list_screen.dart';
@@ -24,6 +25,7 @@ import 'ui/screens/invitations/invitation_accept_screen.dart';
 import 'ui/screens/payments/payment_form_screen.dart';
 import 'ui/screens/payments/payment_approval_screen.dart';
 import 'state/app_mode/app_mode_provider.dart';
+import 'models/recurring_payment.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,6 +74,10 @@ class MyApp extends ConsumerWidget {
         GoRoute(
             path: AppRoutes.recurringPayments,
             builder: (_, __) => const RecurringPaymentsScreen()),
+        GoRoute(
+            path: AppRoutes.recurringPaymentForm,
+            builder: (_, state) => RecurringPaymentFormScreen(
+                payment: state.extra as RecurringPayment?)),
         GoRoute(
             path: AppRoutes.reports,
             builder: (_, __) => const ReportsScreen()),

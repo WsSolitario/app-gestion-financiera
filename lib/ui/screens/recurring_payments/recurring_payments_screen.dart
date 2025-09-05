@@ -1,8 +1,11 @@
+// lib/ui/screens/recurring_payments/recurring_payments_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../routes.dart';
 import '../../../state/recurring_payments/recurring_payment_provider.dart';
 import '../../../utils/formatters.dart';
 import '../../widgets/app_bottom_navigation.dart';
@@ -15,9 +18,7 @@ class RecurringPaymentsScreen extends HookConsumerWidget {
     final state = ref.watch(recurringPaymentNotifierProvider);
 
     useEffect(() {
-      ref
-          .read(recurringPaymentNotifierProvider.notifier)
-          .fetchPayments();
+      ref.read(recurringPaymentNotifierProvider.notifier).fetchPayments();
       return null;
     }, []);
 
@@ -41,13 +42,11 @@ class RecurringPaymentsScreen extends HookConsumerWidget {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                  '${Formatters.money(p.amount)} · ${p.frequency}'),
+                              Text('${Formatters.money(p.amount)} · ${p.frequency}'),
                               if (p.nextDate != null)
                                 Text(
                                   'Próximo pago: ${DateFormat('dd/MM/yyyy').format(p.nextDate!)}',
-                                  style: const TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                                 ),
                             ],
                           ),
@@ -70,8 +69,9 @@ class RecurringPaymentsScreen extends HookConsumerWidget {
                           ),
                         ),
                       ),
+                    const SizedBox(height: 8),
                     ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () => context.push(AppRoutes.recurringPaymentForm),
                       icon: const Icon(Icons.add),
                       label: const Text('Agregar Gasto Recurrente'),
                       style: ElevatedButton.styleFrom(
