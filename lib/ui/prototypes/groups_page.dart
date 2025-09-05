@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/app_bottom_navigation.dart';
+
 const lightGray = Color(0xFFF5F5F5);
 const blueishGray = Color(0xFF7C8B9A);
 
@@ -68,18 +70,7 @@ class GroupsPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.groups), label: 'Grupos'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.payments), label: 'Pagos'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-        ],
-      ),
+      bottomNavigationBar: const AppBottomNavigation(currentIndex: 0),
     );
   }
 }
