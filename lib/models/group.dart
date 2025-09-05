@@ -1,3 +1,4 @@
+// lib/models/group.dart
 class Group {
   final String id;
   final String name;
@@ -21,34 +22,31 @@ class Group {
     this.expenseCount = 0,
   });
 
-  factory Group.fromJson(Map<String, dynamic> json) => Group(
-        id: json['id'].toString(),
-        name: json['name'] ?? '',
-        description: json['description'],
-        createdBy:
-            json['created_by']?.toString() ?? json['createdBy']?.toString(),
-        createdAt: json['created_at'] != null
-            ? DateTime.parse(json['created_at'])
-            : json['createdAt'] != null
-                ? DateTime.parse(json['createdAt'])
-                : null,
-        updatedAt: json['updated_at'] != null
-            ? DateTime.parse(json['updated_at'])
-            : json['updatedAt'] != null
-                ? DateTime.parse(json['updatedAt'])
-                : null,
-        imageUrl: json['image_url'] ?? json['imageUrl'],
-        memberCount: json['member_count'] != null
-            ? int.tryParse(json['member_count'].toString()) ?? 0
-            : json['memberCount'] != null
-                ? int.tryParse(json['memberCount'].toString()) ?? 0
-                : 0,
-        expenseCount: json['expense_count'] != null
-            ? int.tryParse(json['expense_count'].toString()) ?? 0
-            : json['expenseCount'] != null
-                ? int.tryParse(json['expenseCount'].toString()) ?? 0
-                : 0,
-      );
+  factory Group.fromJson(Map<String, dynamic> json) {
+    int _toInt(dynamic v) {
+      if (v == null) return 0;
+      if (v is int) return v;
+      if (v is double) return v.toInt();
+      return int.tryParse(v.toString()) ?? 0;
+    }
+
+    DateTime? _toDate(dynamic v) {
+      if (v == null) return null;
+      return DateTime.tryParse(v.toString());
+    }
+
+    return Group(
+      id: json['id'].toString(),
+      name: json['name'] ?? '',
+      description: json['description'],
+      createdBy: json['created_by']?.toString() ?? json['createdBy']?.toString(),
+      imageUrl: json['image_url']?.toString() ?? json['imageUrl']?.toString(),
+      memberCount: _toInt(json['member_count'] ?? json['memberCount']),
+      expenseCount: _toInt(json['expense_count'] ?? json['expenseCount']),
+      createdAt: _toDate(json['created_at'] ?? json['createdAt']),
+      updatedAt: _toDate(json['updated_at'] ?? json['updatedAt']),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'id': id,
