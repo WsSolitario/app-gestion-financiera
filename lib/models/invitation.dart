@@ -19,26 +19,32 @@ class Invitation {
 
   factory Invitation.fromJson(Map<String, dynamic> json) => Invitation(
         id: json['id'].toString(),
-        groupId: json['groupId'].toString(),
+        groupId:
+            json['group_id']?.toString() ?? json['groupId'].toString(),
         email: json['email'] ?? '',
         status: json['status'] ?? '',
-        invitedBy: json['invitedBy']?.toString(),
-        createdAt: json['createdAt'] != null
-            ? DateTime.parse(json['createdAt'])
-            : null,
-        updatedAt: json['updatedAt'] != null
-            ? DateTime.parse(json['updatedAt'])
-            : null,
+        invitedBy:
+            json['invited_by']?.toString() ?? json['invitedBy']?.toString(),
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : json['createdAt'] != null
+                ? DateTime.parse(json['createdAt'])
+                : null,
+        updatedAt: json['updated_at'] != null
+            ? DateTime.parse(json['updated_at'])
+            : json['updatedAt'] != null
+                ? DateTime.parse(json['updatedAt'])
+                : null,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'groupId': groupId,
+        'group_id': groupId,
         'email': email,
         'status': status,
-        'invitedBy': invitedBy,
-        'createdAt': createdAt?.toIso8601String(),
-        'updatedAt': updatedAt?.toIso8601String(),
+        'invited_by': invitedBy,
+        'created_at': createdAt?.toIso8601String(),
+        'updated_at': updatedAt?.toIso8601String(),
       };
 }
 

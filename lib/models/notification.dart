@@ -17,17 +17,20 @@ class AppNotification {
         id: json['id'].toString(),
         title: json['title'] ?? '',
         body: json['body'] ?? '',
-        isRead: json['isRead'] ?? json['read'] ?? false,
-        createdAt: json['createdAt'] != null
-            ? DateTime.parse(json['createdAt'])
-            : null,
+        isRead:
+            json['is_read'] ?? json['isRead'] ?? json['read'] ?? false,
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : json['createdAt'] != null
+                ? DateTime.parse(json['createdAt'])
+                : null,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
         'body': body,
-        'isRead': isRead,
-        'createdAt': createdAt?.toIso8601String(),
+        'is_read': isRead,
+        'created_at': createdAt?.toIso8601String(),
       };
 }

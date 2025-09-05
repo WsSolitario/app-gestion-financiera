@@ -1,6 +1,7 @@
 import "package:dio/dio.dart";
 
 import "../models/expense.dart";
+import "../models/expense_participant.dart";
 import "../services/api_client.dart";
 
 class ExpenseService {
@@ -11,13 +12,22 @@ class ExpenseService {
       {DateTime? startDate, DateTime? endDate}) async {
     try {
       final params = {
-        "group_id": groupId,
-        if (startDate != null) "start_date": startDate.toIso8601String(),
-        if (endDate != null) "end_date": endDate.toIso8601String(),
+        "groupId": groupId,
+        if (startDate != null) "startDate": startDate.toIso8601String(),
+        if (endDate != null) "endDate": endDate.toIso8601String(),
       };
       final res = await _client.get("/expenses", query: params);
       final data = res.data as List;
       return data.map((e) => Expense.fromJson(e)).toList();
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  Future<Expense> getExpense(String id) async {
+    try {
+      final res = await _client.get("/expenses/$id");
+      return Expense.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
     }
@@ -31,7 +41,7 @@ class ExpenseService {
     bool hasTicket = false,
     String? ticketImageUrl,
     String? createdBy,
-    List<String> participants = const [],
+    List<ExpenseParticipant> participants = const [],
   }) async {
     try {
       final res = await _client.post("/expenses", data: {
@@ -41,7 +51,8 @@ class ExpenseService {
         "expense_date": expenseDate?.toIso8601String(),
         "has_ticket": hasTicket,
         "ticket_image_url": ticketImageUrl,
-        "participants": participants,
+        "participants":
+            participants.map((p) => p.toJson()).toList(),
         if (createdBy != null) "created_by": createdBy,
       });
       return Expense.fromJson(res.data);
@@ -58,7 +69,7 @@ class ExpenseService {
     DateTime? expenseDate,
     bool? hasTicket,
     String? ticketImageUrl,
-    List<String>? participants,
+    List<ExpenseParticipant>? participants,
   }) async {
     try {
       final data = {
@@ -68,9 +79,19 @@ class ExpenseService {
         if (expenseDate != null) "expense_date": expenseDate.toIso8601String(),
         if (hasTicket != null) "has_ticket": hasTicket,
         if (ticketImageUrl != null) "ticket_image_url": ticketImageUrl,
-        if (participants != null) "participants": participants,
+        if (participants != null)
+          "participants": participants.map((p) => p.toJson()).toList(),
       };
       final res = await _client.put("/expenses/$id", data: data);
+      return Expense.fromJson(res.data);
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  Future<Expense> approveExpense(String id) async {
+    try {
+      final res = await _client.post("/expenses/$id/approve");
       return Expense.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);

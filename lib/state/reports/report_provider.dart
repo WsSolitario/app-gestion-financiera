@@ -14,10 +14,18 @@ class ReportNotifier extends StateNotifier<ReportState> {
   final ReportsRepository _repo;
   ReportNotifier(this._repo) : super(ReportState.initial());
 
-  Future<void> fetchReports() async {
+  Future<void> fetchReports({
+    String? groupId,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final reports = await _repo.fetchReports();
+      final reports = await _repo.fetchReports(
+        groupId: groupId,
+        startDate: startDate,
+        endDate: endDate,
+      );
       state = state.copyWith(reports: reports, isLoading: false);
     } on DioException catch (e) {
       state = state.copyWith(

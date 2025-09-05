@@ -1,5 +1,5 @@
+// lib/services/recurring_payment_service.dart
 import 'package:dio/dio.dart';
-
 import '../models/recurring_payment.dart';
 import '../services/api_client.dart';
 
@@ -9,7 +9,7 @@ class RecurringPaymentService {
 
   Future<List<RecurringPayment>> getRecurringPayments({String? groupId}) async {
     try {
-      final res = await _client.get('/recurring_payments', query: {
+      final res = await _client.get('/recurring-payments', query: {
         if (groupId != null) 'group_id': groupId,
       });
       final data = res.data as List;
@@ -27,7 +27,7 @@ class RecurringPaymentService {
     DateTime? nextDate,
   }) async {
     try {
-      final res = await _client.post('/recurring_payments', data: {
+      final res = await _client.post('/recurring-payments', data: {
         'group_id': groupId,
         'description': description,
         'amount': amount,
@@ -48,7 +48,7 @@ class RecurringPaymentService {
     DateTime? nextDate,
   }) async {
     try {
-      final res = await _client.put('/recurring_payments/$id', data: {
+      final res = await _client.put('/recurring-payments/$id', data: {
         if (description != null) 'description': description,
         if (amount != null) 'amount': amount,
         if (frequency != null) 'frequency': frequency,
@@ -62,7 +62,7 @@ class RecurringPaymentService {
 
   Future<void> deleteRecurringPayment(String id) async {
     try {
-      await _client.delete('/recurring_payments/$id');
+      await _client.delete('/recurring-payments/$id');
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? e.message);
     }

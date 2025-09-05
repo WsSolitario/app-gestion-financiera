@@ -29,34 +29,43 @@ class Payment {
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
         id: json['id'].toString(),
-        groupId: json['groupId'].toString(),
-        fromUserId: json['fromUserId'].toString(),
-        toUserId: json['toUserId'].toString(),
+        groupId:
+            json['group_id']?.toString() ?? json['groupId'].toString(),
+        fromUserId: json['from_user_id']?.toString() ??
+            json['fromUserId'].toString(),
+        toUserId:
+            json['to_user_id']?.toString() ?? json['toUserId'].toString(),
         amount: (json['amount'] as num?)?.toDouble() ?? 0,
         note: json['note']?.toString(),
-        evidenceUrl: json['evidenceUrl']?.toString(),
-        paymentMethod: json['paymentMethod']?.toString(),
+        evidenceUrl:
+            json['evidence_url']?.toString() ?? json['evidenceUrl']?.toString(),
+        paymentMethod: json['payment_method']?.toString() ??
+            json['paymentMethod']?.toString(),
         status: _statusFromString(json['status'] ?? ''),
-        createdAt: json['createdAt'] != null
-            ? DateTime.parse(json['createdAt'])
-            : null,
-        updatedAt: json['updatedAt'] != null
-            ? DateTime.parse(json['updatedAt'])
-            : null,
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : json['createdAt'] != null
+                ? DateTime.parse(json['createdAt'])
+                : null,
+        updatedAt: json['updated_at'] != null
+            ? DateTime.parse(json['updated_at'])
+            : json['updatedAt'] != null
+                ? DateTime.parse(json['updatedAt'])
+                : null,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'groupId': groupId,
-        'fromUserId': fromUserId,
-        'toUserId': toUserId,
+        'group_id': groupId,
+        'from_user_id': fromUserId,
+        'to_user_id': toUserId,
         'amount': amount,
         if (note != null) 'note': note,
-        if (evidenceUrl != null) 'evidenceUrl': evidenceUrl,
-        if (paymentMethod != null) 'paymentMethod': paymentMethod,
+        if (evidenceUrl != null) 'evidence_url': evidenceUrl,
+        if (paymentMethod != null) 'payment_method': paymentMethod,
         'status': status.name,
-        'createdAt': createdAt?.toIso8601String(),
-        'updatedAt': updatedAt?.toIso8601String(),
+        'created_at': createdAt?.toIso8601String(),
+        'updated_at': updatedAt?.toIso8601String(),
       };
 }
 

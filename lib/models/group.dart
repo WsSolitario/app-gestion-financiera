@@ -19,19 +19,26 @@ class Group {
         id: json['id'].toString(),
         name: json['name'] ?? '',
         description: json['description'],
-        createdBy: json['createdBy']?.toString(),
-        createdAt:
-            json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
-        updatedAt:
-            json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+        createdBy:
+            json['created_by']?.toString() ?? json['createdBy']?.toString(),
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : json['createdAt'] != null
+                ? DateTime.parse(json['createdAt'])
+                : null,
+        updatedAt: json['updated_at'] != null
+            ? DateTime.parse(json['updated_at'])
+            : json['updatedAt'] != null
+                ? DateTime.parse(json['updatedAt'])
+                : null,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
         'description': description,
-        'createdBy': createdBy,
-        'createdAt': createdAt?.toIso8601String(),
-        'updatedAt': updatedAt?.toIso8601String(),
+        'created_by': createdBy,
+        'created_at': createdAt?.toIso8601String(),
+        'updated_at': updatedAt?.toIso8601String(),
       };
 }

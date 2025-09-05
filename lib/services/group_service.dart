@@ -62,7 +62,7 @@ class GroupService {
   Future<void> addMember(String groupId, String userId, {String? role}) async {
     try {
       await _client.post("/groups/$groupId/members", data: {
-        "userId": userId,
+        "user_id": userId,
         if (role != null) "role": role,
       });
     } on DioException catch (e) {

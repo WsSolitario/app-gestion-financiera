@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../config/locator.dart';
 import '../../repositories/expense_repository.dart';
 import '../../models/expense.dart';
+import '../../models/expense_participant.dart';
 import 'expense_state.dart';
 
 final expenseNotifierProvider =
@@ -43,7 +44,7 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
     bool hasTicket = false,
     String? ticketImageUrl,
     String? createdBy,
-    List<String> participants = const [],
+    List<ExpenseParticipant> participants = const [],
   }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
@@ -59,6 +60,43 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
       );
       final expenses = await _repo.getExpenses(groupId);
       state = state.copyWith(expenses: expenses, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> fetchExpense(String id) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final expense = await _repo.getExpense(id);
+      var expenses = state.expenses.map((e) => e.id == id ? expense : e).toList();
+      if (!expenses.any((e) => e.id == id)) {
+        expenses = [...expenses, expense];
+      }
+      state = state.copyWith(expenses: expenses, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> approveExpense(String id) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final updated = await _repo.approveExpense(id);
+      state = state.copyWith(
+        expenses: state.expenses.map((e) => e.id == id ? updated : e).toList(),
+        isLoading: false,
+      );
     } on DioException catch (e) {
       state = state.copyWith(
         isLoading: false,
