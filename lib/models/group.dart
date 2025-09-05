@@ -5,6 +5,9 @@ class Group {
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final int? memberCount;
+  final int? expenseCount;
+  final String? imageUrl;
 
   Group({
     required this.id,
@@ -13,6 +16,9 @@ class Group {
     this.createdBy,
     this.createdAt,
     this.updatedAt,
+    this.memberCount,
+    this.expenseCount,
+    this.imageUrl,
   });
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
@@ -21,6 +27,12 @@ class Group {
         description: json['description'],
         createdBy:
             json['created_by']?.toString() ?? json['createdBy']?.toString(),
+        memberCount: (json['member_count'] as num? ?? json['memberCount'] as num?)
+            ?.toInt(),
+        expenseCount: (json['expense_count'] as num? ??
+                json['expenseCount'] as num?)
+            ?.toInt(),
+        imageUrl: json['image_url']?.toString() ?? json['imageUrl']?.toString(),
         createdAt: json['created_at'] != null
             ? DateTime.parse(json['created_at'])
             : json['createdAt'] != null
@@ -40,5 +52,8 @@ class Group {
         'created_by': createdBy,
         'created_at': createdAt?.toIso8601String(),
         'updated_at': updatedAt?.toIso8601String(),
+        'member_count': memberCount,
+        'expense_count': expenseCount,
+        'image_url': imageUrl,
       };
 }
