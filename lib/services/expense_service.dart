@@ -12,9 +12,9 @@ class ExpenseService {
       {DateTime? startDate, DateTime? endDate}) async {
     try {
       final params = {
-        "group_id": groupId,
-        if (startDate != null) "start_date": startDate.toIso8601String(),
-        if (endDate != null) "end_date": endDate.toIso8601String(),
+        "groupId": groupId,
+        if (startDate != null) "startDate": startDate.toIso8601String(),
+        if (endDate != null) "endDate": endDate.toIso8601String(),
       };
       final res = await _client.get("/expenses", query: params);
       final data = res.data as List;
