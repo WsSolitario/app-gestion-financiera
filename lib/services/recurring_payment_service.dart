@@ -10,7 +10,7 @@ class RecurringPaymentService {
   Future<List<RecurringPayment>> getRecurringPayments({String? groupId}) async {
     try {
       final res = await _client.get('/recurring-payments', query: {
-        if (groupId != null) 'groupId': groupId,
+        if (groupId != null) 'group_id': groupId,
       });
       final data = res.data as List;
       return data.map((e) => RecurringPayment.fromJson(e)).toList();
@@ -27,7 +27,7 @@ class RecurringPaymentService {
   }) async {
     try {
       final res = await _client.post('/recurring-payments', data: {
-        'groupId': groupId,
+        'group_id': groupId,
         'description': description,
         'amount': amount,
         'frequency': frequency,
@@ -48,7 +48,7 @@ class RecurringPaymentService {
         if (description != null) 'description': description,
         if (amount != null) 'amount': amount,
         if (frequency != null) 'frequency': frequency,
-        if (nextDate != null) 'nextDate': nextDate.toIso8601String(),
+        if (nextDate != null) 'next_date': nextDate.toIso8601String(),
       });
       return RecurringPayment.fromJson(res.data);
     } on DioException catch (e) {
