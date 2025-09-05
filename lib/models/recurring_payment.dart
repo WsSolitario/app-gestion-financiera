@@ -17,21 +17,24 @@ class RecurringPayment {
 
   factory RecurringPayment.fromJson(Map<String, dynamic> json) => RecurringPayment(
         id: json['id'].toString(),
-        groupId: json['groupId'].toString(),
+        groupId:
+            json['group_id']?.toString() ?? json['groupId'].toString(),
         description: json['description'] ?? '',
         amount: (json['amount'] as num?)?.toDouble() ?? 0,
         frequency: json['frequency'] ?? '',
-        nextDate: json['nextDate'] != null
-            ? DateTime.parse(json['nextDate'])
-            : null,
+        nextDate: json['next_date'] != null
+            ? DateTime.parse(json['next_date'])
+            : json['nextDate'] != null
+                ? DateTime.parse(json['nextDate'])
+                : null,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'groupId': groupId,
+        'group_id': groupId,
         'description': description,
         'amount': amount,
         'frequency': frequency,
-        'nextDate': nextDate?.toIso8601String(),
+        'next_date': nextDate?.toIso8601String(),
       };
 }

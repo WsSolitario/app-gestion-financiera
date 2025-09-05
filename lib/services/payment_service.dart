@@ -7,7 +7,7 @@ class PaymentService {
   final ApiClient _client;
   PaymentService(this._client);
 
-  /// GET /api/payments[?status][&direction][&groupId][&startDate][&endDate]
+  /// GET /api/payments[?status][&direction][&group_id][&start_date][&end_date]
   Future<List<Payment>> getPayments({
     String? groupId,
     String? status,     // "approved" | "pending" | "rejected"
@@ -17,11 +17,11 @@ class PaymentService {
   }) async {
     try {
       final res = await _client.get("/payments", query: {
-        if (groupId != null) "groupId": groupId,
+        if (groupId != null) "group_id": groupId,
         if (status != null) "status": status,
         if (direction != null) "direction": direction,
-        if (startDate != null) "startDate": startDate,
-        if (endDate != null) "endDate": endDate,
+        if (startDate != null) "start_date": startDate,
+        if (endDate != null) "end_date": endDate,
       });
       final data = res.data as List;
       return data.map((e) => Payment.fromJson(e)).toList();
@@ -31,7 +31,7 @@ class PaymentService {
   }
 
   /// POST /api/payments
-  /// Body: { groupId, fromUserId, toUserId, amount, note?, evidenceUrl?, paymentMethod? }
+  /// Body: { group_id, from_user_id, to_user_id, amount, note?, evidence_url?, payment_method? }
   Future<Payment> createPayment({
     required String groupId,
     required String fromUserId,
@@ -43,13 +43,13 @@ class PaymentService {
   }) async {
     try {
       final res = await _client.post("/payments", data: {
-        "groupId": groupId,
-        "fromUserId": fromUserId,
-        "toUserId": toUserId,
+        "group_id": groupId,
+        "from_user_id": fromUserId,
+        "to_user_id": toUserId,
         "amount": amount,
         if (note != null) "note": note,
-        if (evidenceUrl != null) "evidenceUrl": evidenceUrl,
-        if (paymentMethod != null) "paymentMethod": paymentMethod,
+        if (evidenceUrl != null) "evidence_url": evidenceUrl,
+        if (paymentMethod != null) "payment_method": paymentMethod,
       });
       return Payment.fromJson(res.data);
     } on DioException catch (e) {
@@ -86,13 +86,13 @@ class PaymentService {
     }
   }
 
-  /// GET /api/payments/due[?groupId]
+  /// GET /api/payments/due[?group_id]
   Future<List<Payment>> getDuePayments({String? groupId}) async {
     try {
       final res = await _client.get(
         "/payments/due",
         query: {
-          if (groupId != null) "groupId": groupId,
+          if (groupId != null) "group_id": groupId,
         },
       );
       final data = res.data as List;
