@@ -1,3 +1,4 @@
+// lib/models/payment.dart
 enum PaymentStatus { pending, approved, rejected }
 
 class Payment {
@@ -27,33 +28,29 @@ class Payment {
     this.updatedAt,
   });
 
+  static DateTime? _parseDate(dynamic v) {
+    if (v == null) return null;
+    final s = v.toString();
+    if (s.isEmpty) return null;
+    return DateTime.parse(s);
+  }
+
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
         id: json['id'].toString(),
-        groupId:
-            json['group_id']?.toString() ?? json['groupId'].toString(),
-        fromUserId: json['from_user_id']?.toString() ??
-            json['fromUserId'].toString(),
-        toUserId:
-            json['to_user_id']?.toString() ?? json['toUserId'].toString(),
-        amount: (json['amount'] as num?)?.toDouble() ?? 0,
+        groupId: (json['group_id'] ?? json['groupId']).toString(),
+        fromUserId: (json['from_user_id'] ?? json['fromUserId']).toString(),
+        toUserId: (json['to_user_id'] ?? json['toUserId']).toString(),
+        amount: (json['amount'] as num?)?.toDouble() ?? 0.0,
         note: json['note']?.toString(),
-        evidenceUrl:
-            json['evidence_url']?.toString() ?? json['evidenceUrl']?.toString(),
-        paymentMethod: json['payment_method']?.toString() ??
-            json['paymentMethod']?.toString(),
-        status: _statusFromString(json['status'] ?? ''),
-        createdAt: json['created_at'] != null
-            ? DateTime.parse(json['created_at'])
-            : json['createdAt'] != null
-                ? DateTime.parse(json['createdAt'])
-                : null,
-        updatedAt: json['updated_at'] != null
-            ? DateTime.parse(json['updated_at'])
-            : json['updatedAt'] != null
-                ? DateTime.parse(json['updatedAt'])
-                : null,
+        evidenceUrl: (json['evidence_url'] ?? json['evidenceUrl'])?.toString(),
+        paymentMethod:
+            (json['payment_method'] ?? json['paymentMethod'])?.toString(),
+        status: _statusFromString(json['status']?.toString() ?? ''),
+        createdAt: _parseDate(json['created_at'] ?? json['createdAt']),
+        updatedAt: _parseDate(json['updated_at'] ?? json['updatedAt']),
       );
 
+  /// Para enviar al backend (evitamos created/updated al ser del servidor).
   Map<String, dynamic> toJson() => {
         'id': id,
         'group_id': groupId,
@@ -64,8 +61,6 @@ class Payment {
         if (evidenceUrl != null) 'evidence_url': evidenceUrl,
         if (paymentMethod != null) 'payment_method': paymentMethod,
         'status': status.name,
-        'created_at': createdAt?.toIso8601String(),
-        'updated_at': updatedAt?.toIso8601String(),
       };
 }
 
@@ -75,4 +70,3 @@ PaymentStatus _statusFromString(String value) {
     orElse: () => PaymentStatus.pending,
   );
 }
-
