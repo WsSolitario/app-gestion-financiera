@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../state/recurring_payments/recurring_payment_provider.dart';
+import '../../widgets/app_bottom_navigation.dart';
 
 class RecurringPaymentsScreen extends HookConsumerWidget {
   const RecurringPaymentsScreen({super.key});
@@ -35,6 +36,7 @@ class RecurringPaymentsScreen extends HookConsumerWidget {
                     );
                   },
                 ),
+      bottomNavigationBar: const AppBottomNavigation(currentIndex: 2),
     );
   }
 }

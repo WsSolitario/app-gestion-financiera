@@ -17,7 +17,7 @@ class AppBottomNavigation extends StatelessWidget {
         context.go(AppRoutes.dashboard);
         break;
       case 2:
-        context.go('/payments');
+        context.go(AppRoutes.recurringPayments);
         break;
       case 3:
         context.go(AppRoutes.profile);
