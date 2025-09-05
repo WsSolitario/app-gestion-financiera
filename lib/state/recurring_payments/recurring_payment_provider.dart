@@ -1,3 +1,4 @@
+// lib/state/recurring_payments/recurring_payment_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 
@@ -10,11 +11,9 @@ final recurringPaymentNotifierProvider =
   return RecurringPaymentNotifier(locator<RecurringPaymentRepository>());
 });
 
-class RecurringPaymentNotifier
-    extends StateNotifier<RecurringPaymentState> {
+class RecurringPaymentNotifier extends StateNotifier<RecurringPaymentState> {
   final RecurringPaymentRepository _repo;
-  RecurringPaymentNotifier(this._repo)
-      : super(RecurringPaymentState.initial());
+  RecurringPaymentNotifier(this._repo) : super(RecurringPaymentState.initial());
 
   Future<void> fetchPayments({String? groupId}) async {
     state = state.copyWith(isLoading: true, error: null);
@@ -40,15 +39,17 @@ class RecurringPaymentNotifier
   }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      await _repo.createRecurringPayment(
+      final payment = await _repo.createRecurringPayment(
         groupId: groupId,
         description: description,
         amount: amount,
         frequency: frequency,
         nextDate: nextDate,
       );
-      final payments = await _repo.getRecurringPayments(groupId: groupId);
-      state = state.copyWith(payments: payments, isLoading: false);
+      state = state.copyWith(
+        payments: [...state.payments, payment],
+        isLoading: false,
+      );
     } on DioException catch (e) {
       state = state.copyWith(
         isLoading: false,
@@ -76,9 +77,25 @@ class RecurringPaymentNotifier
         nextDate: nextDate,
       );
       state = state.copyWith(
-        payments: state.payments
-            .map((p) => p.id == id ? updated : p)
-            .toList(),
+        payments: state.payments.map((p) => p.id == id ? updated : p).toList(),
+        isLoading: false,
+      );
+    } on DioException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> deleteRecurringPayment(String id) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      await _repo.deleteRecurringPayment(id);
+      state = state.copyWith(
+        payments: state.payments.where((p) => p.id != id).toList(),
         isLoading: false,
       );
     } on DioException catch (e) {
