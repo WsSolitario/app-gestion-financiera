@@ -69,6 +69,43 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
     }
   }
 
+  Future<void> fetchExpense(String id) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final expense = await _repo.getExpense(id);
+      var expenses = state.expenses.map((e) => e.id == id ? expense : e).toList();
+      if (!expenses.any((e) => e.id == id)) {
+        expenses = [...expenses, expense];
+      }
+      state = state.copyWith(expenses: expenses, isLoading: false);
+    } on DioException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> approveExpense(String id) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final updated = await _repo.approveExpense(id);
+      state = state.copyWith(
+        expenses: state.expenses.map((e) => e.id == id ? updated : e).toList(),
+        isLoading: false,
+      );
+    } on DioException catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.response?.data['message'] ?? e.message,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
   Expense? getById(String id) {
     try {
       return state.expenses.firstWhere((e) => e.id == id);

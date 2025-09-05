@@ -19,6 +19,9 @@ class ExpenseRepository {
     );
   }
 
+  /// Retrieve a single expense by its identifier.
+  Future<Expense> getExpense(String id) => _service.getExpense(id);
+
   /// Create a new expense in the given group.
   Future<Expense> createExpense(
     String groupId,
@@ -64,6 +67,9 @@ class ExpenseRepository {
       participants: participants,
     );
   }
+
+  /// Approve an expense by its identifier.
+  Future<Expense> approveExpense(String id) => _service.approveExpense(id);
 
   /// Remove an expense by its identifier.
   Future<void> deleteExpense(String id) async {
