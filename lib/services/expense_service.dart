@@ -1,6 +1,7 @@
 import "package:dio/dio.dart";
 
 import "../models/expense.dart";
+import "../models/expense_participant.dart";
 import "../services/api_client.dart";
 
 class ExpenseService {
@@ -31,7 +32,7 @@ class ExpenseService {
     bool hasTicket = false,
     String? ticketImageUrl,
     String? createdBy,
-    List<String> participants = const [],
+    List<ExpenseParticipant> participants = const [],
   }) async {
     try {
       final res = await _client.post("/expenses", data: {
@@ -41,7 +42,8 @@ class ExpenseService {
         "expense_date": expenseDate?.toIso8601String(),
         "has_ticket": hasTicket,
         "ticket_image_url": ticketImageUrl,
-        "participants": participants,
+        "participants":
+            participants.map((p) => p.toJson()).toList(),
         if (createdBy != null) "created_by": createdBy,
       });
       return Expense.fromJson(res.data);
@@ -58,7 +60,7 @@ class ExpenseService {
     DateTime? expenseDate,
     bool? hasTicket,
     String? ticketImageUrl,
-    List<String>? participants,
+    List<ExpenseParticipant>? participants,
   }) async {
     try {
       final data = {
@@ -68,7 +70,8 @@ class ExpenseService {
         if (expenseDate != null) "expense_date": expenseDate.toIso8601String(),
         if (hasTicket != null) "has_ticket": hasTicket,
         if (ticketImageUrl != null) "ticket_image_url": ticketImageUrl,
-        if (participants != null) "participants": participants,
+        if (participants != null)
+          "participants": participants.map((p) => p.toJson()).toList(),
       };
       final res = await _client.put("/expenses/$id", data: data);
       return Expense.fromJson(res.data);

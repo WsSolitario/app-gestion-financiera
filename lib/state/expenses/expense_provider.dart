@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../../config/locator.dart';
 import '../../repositories/expense_repository.dart';
 import '../../models/expense.dart';
+import '../../models/expense_participant.dart';
 import 'expense_state.dart';
 
 final expenseNotifierProvider =
@@ -43,7 +44,7 @@ class ExpenseNotifier extends StateNotifier<ExpenseState> {
     bool hasTicket = false,
     String? ticketImageUrl,
     String? createdBy,
-    List<String> participants = const [],
+    List<ExpenseParticipant> participants = const [],
   }) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
