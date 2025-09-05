@@ -12,7 +12,8 @@ class ApiClient {
     _dio.options.connectTimeout = const Duration(seconds: 30);
     _dio.options.receiveTimeout = const Duration(seconds: 30);
     _dio.options.sendTimeout = const Duration(seconds: 30);
-    _dio.options.validateStatus = (status) => status! < 500;
+    _dio.options.validateStatus =
+        (status) => status != null && status >= 200 && status < 300;
 
     // Agregar logging
     _dio.interceptors.add(

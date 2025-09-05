@@ -8,18 +8,27 @@ class AuthService {
   AuthService(this._client);
 
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final res = await _client.post("/auth/login", data: {
-      "email": email,
-      "password": password,
-    });
-    return {
-      "user": User.fromJson(res.data["user"]),
-      "token": res.data["token"],
-    };
+    try {
+      final res = await _client.post("/auth/login", data: {
+        "email": email,
+        "password": password,
+      });
+      return {
+        "user": User.fromJson(res.data["user"]),
+        "token": res.data["token"],
+      };
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
   }
 
-  Future<void> logout({bool all = false}) =>
-      _client.post("/auth/logout", query: {"all": all});
+  Future<void> logout({bool all = false}) async {
+    try {
+      await _client.post("/auth/logout", query: {"all": all});
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
 
   Future<User> register(
     String email,
@@ -63,21 +72,29 @@ class AuthService {
       String? email,
       String? profilePictureUrl,
       String? phoneNumber}) async {
-    final res = await _client.put("/users/me", data: {
-      "name": name,
-      "email": email,
-      "profile_picture_url": profilePictureUrl,
-      "phone_number": phoneNumber,
-    });
-    return User.fromJson(res.data["user"]);
+    try {
+      final res = await _client.put("/users/me", data: {
+        "name": name,
+        "email": email,
+        "profile_picture_url": profilePictureUrl,
+        "phone_number": phoneNumber,
+      });
+      return User.fromJson(res.data["user"]);
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
   }
 
   Future<void> updatePassword(
       String currentPassword, String newPassword) async {
-    await _client.put("/users/me/password", data: {
-      "current_password": currentPassword,
-      "password": newPassword,
-      "password_confirmation": newPassword,
-    });
+    try {
+      await _client.put("/users/me/password", data: {
+        "current_password": currentPassword,
+        "password": newPassword,
+        "password_confirmation": newPassword,
+      });
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
   }
 }
