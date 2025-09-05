@@ -8,7 +8,7 @@ class PaymentService {
   final ApiClient _client;
   PaymentService(this._client);
 
-  /// GET /payments[?status][&direction][&group_id][&start_date][&end_date]
+  /// GET /payments[?status][&direction][&groupId][&startDate][&endDate]
   Future<List<Payment>> getPayments({
     String? groupId,
     String? status, // "approved" | "pending" | "rejected"
@@ -20,11 +20,11 @@ class PaymentService {
       final res = await _client.get(
         '/payments',
         query: {
-          if (groupId != null) 'group_id': groupId,
+          if (groupId != null) 'groupId': groupId,
           if (status != null) 'status': status,
           if (direction != null) 'direction': direction,
-          if (startDate != null) 'start_date': startDate,
-          if (endDate != null) 'end_date': endDate,
+          if (startDate != null) 'startDate': startDate,
+          if (endDate != null) 'endDate': endDate,
         },
       );
       final data = res.data as List;
