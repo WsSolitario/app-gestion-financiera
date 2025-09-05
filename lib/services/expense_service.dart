@@ -1,4 +1,5 @@
 import "package:dio/dio.dart";
+import "package:intl/intl.dart";
 
 import "../models/expense.dart";
 import "../models/expense_participant.dart";
@@ -16,8 +17,10 @@ class ExpenseService {
     try {
       final params = {
         "groupId": groupId,
-        if (startDate != null) "startDate": startDate.toIso8601String(),
-        if (endDate != null) "endDate": endDate.toIso8601String(),
+        if (startDate != null)
+          "startDate": DateFormat('yyyy-MM-dd').format(startDate),
+        if (endDate != null)
+          "endDate": DateFormat('yyyy-MM-dd').format(endDate),
       };
       final res = await _client.get(
         "/expenses",
