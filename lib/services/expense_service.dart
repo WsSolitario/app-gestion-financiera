@@ -24,6 +24,15 @@ class ExpenseService {
     }
   }
 
+  Future<Expense> getExpense(String id) async {
+    try {
+      final res = await _client.get("/expenses/$id");
+      return Expense.fromJson(res.data);
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
   Future<Expense> createExpense(
     String groupId,
     String description,
@@ -74,6 +83,15 @@ class ExpenseService {
           "participants": participants.map((p) => p.toJson()).toList(),
       };
       final res = await _client.put("/expenses/$id", data: data);
+      return Expense.fromJson(res.data);
+    } on DioException catch (e) {
+      throw Exception(e.response?.data["message"] ?? e.message);
+    }
+  }
+
+  Future<Expense> approveExpense(String id) async {
+    try {
+      final res = await _client.post("/expenses/$id/approve");
       return Expense.fromJson(res.data);
     } on DioException catch (e) {
       throw Exception(e.response?.data["message"] ?? e.message);
